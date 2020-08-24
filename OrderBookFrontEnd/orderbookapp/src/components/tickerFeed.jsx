@@ -6,7 +6,7 @@ class TickerFeed extends Component {
   render() {
     return (
       <div className="fixed-bottom">
-        <Ticker offset="run-in" speed={10}>
+        <Ticker speed={10}>
           {({ index }) => (
             <>
               <h5>Not yet Functioning!!!</h5>
