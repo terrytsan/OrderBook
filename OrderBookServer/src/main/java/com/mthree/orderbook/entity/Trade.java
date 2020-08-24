@@ -1,15 +1,32 @@
 package com.mthree.orderbook.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public class Trade {
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
 	private int id;
+
+	@ManyToOne
+	@JoinColumn(name = "buyOrderId", nullable = false)
 	private Order buyOrder;
+
+	@ManyToOne
+	@JoinColumn(name = "sellOrderId", nullable = false)
 	private Order sellOrder;
+
+	@Column(nullable = false)
 	private int quantity;
+
+	@Column(nullable = false)
 	private BigDecimal price;
+
+	@Column(nullable = false)
 	private LocalDateTime timestamp;
 	
 	public Trade() {

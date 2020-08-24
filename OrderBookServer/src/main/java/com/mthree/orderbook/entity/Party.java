@@ -1,10 +1,19 @@
 package com.mthree.orderbook.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class Party {
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
 	private int id;
+
+	@Column(nullable = false)
 	private String symbol;
+
+	@Column(nullable = false)
 	private String name;
 	
 	public Party() {

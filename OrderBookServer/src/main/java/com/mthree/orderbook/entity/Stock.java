@@ -1,13 +1,27 @@
 package com.mthree.orderbook.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
 public class Stock {
+
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
 	private int id;
+
+	@ManyToOne
+	@JoinColumn(name = "stockExchangeId", nullable = false)
 	private StockExchange stockExchange;
+
+	@Column(nullable = false)
 	private String symbol;
+
+	@Column(nullable = false)
 	private int maxQuantity;
+
+	@Column(nullable = false)
 	private BigDecimal tickSize;
 	
 	public Stock() {
