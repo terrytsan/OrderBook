@@ -18,6 +18,18 @@ public class Order {
 	public Order() {
 	}
 	
+	public Order(Stock stock, Party party, Side side, int quantity, BigDecimal price, LocalDateTime timestamp,
+	             State state, int version) {
+		this.stock = stock;
+		this.party = party;
+		this.side = side;
+		this.quantity = quantity;
+		this.price = price;
+		this.timestamp = timestamp;
+		this.state = state;
+		this.version = version;
+	}
+	
 	public Order(int id, Stock stock, Party party, Side side, int quantity, BigDecimal price,
 	             LocalDateTime timestamp, State state, int version) {
 		this.id = id;

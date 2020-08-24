@@ -12,7 +12,7 @@
 	<artifactId>orderBook</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>orderBook</name>
+	<name>orderBookServer</name>
 	<description>Server for Order Book project</description>
 
 	<properties>
