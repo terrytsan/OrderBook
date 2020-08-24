@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Navigation from "./components/navigation.jsx";
+import TickerFeed from "./components/tickerFeed.jsx";
 import OrderBook from "./pages/orderbook.jsx";
 import HistoricalData from "./pages/historicalData.jsx";
 import AddOrder from "./pages/addOrder.jsx";
@@ -15,20 +16,21 @@ class App extends Component {
   state = {};
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Navigation />
+      <React.Fragment>
+        <Navigation />
+        <BrowserRouter>
           <Switch>
             <Route path="/" component={OrderBook} exact />
             <Route path="/historicalTrades" component={HistoricalData} />
             <Route path="/addOrder" component={AddOrder} />
             <Route path="/orderDetails" component={OrderDetails} />
             <Route path="/updateOrder" component={UpdateOrder} />
-            <Route path="/orderManager" component={OrderManager} />
+            <Route path="/manageOrders" component={OrderManager} />
             <Route path="/help" component={Help} />
           </Switch>
-        </div>
-      </BrowserRouter>
+        </BrowserRouter>
+        <TickerFeed />
+      </React.Fragment>
     );
   }
 }
