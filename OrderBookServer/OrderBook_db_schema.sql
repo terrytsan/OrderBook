@@ -14,6 +14,7 @@ CREATE TABLE stockExchange (
 CREATE TABLE stock (
     id              INT AUTO_INCREMENT,
     stockExchangeId INT NOT NULL,
+    name            VARCHAR(50) NOT NULL,
     symbol          VARCHAR(10) NOT NULL,
     maxQuantity     INT NOT NULL,
     tickSize        DECIMAL NOT NULL,

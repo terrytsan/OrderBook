@@ -55,6 +55,7 @@ public class StockDaoImpl implements StockDao{
         public Stock mapRow(ResultSet rs, int index) throws SQLException {
             Stock stock = new Stock();
             stock.setId(rs.getInt("id"));
+            stock.setName(rs.getString("name"));
             stock.setSymbol(rs.getString("symbol"));
             stock.setMaxQuantity(rs.getInt("maxQuantity"));
             stock.setTickSize(rs.getBigDecimal("tickSize"));
