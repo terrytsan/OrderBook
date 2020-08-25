@@ -10,15 +10,19 @@ class OrderBook extends Component {
     sellOrders: [],
   };
 
-  //Need to figure out way to split orders based on types
-  organiseOrders = (orders) => {
-    let buyOrders = [];
-    let sellOrders = [];
+  splitorders = (orders) => {
+    const buyOrders = orders.filter((order) => order.side === "BUY");
+    const sellOrders = orders.filter((order) => order.side === "SELL");
+    this.setState({ buyOrders });
+    this.setState({ sellOrders });
   };
+
+  componentDidMount() {
+    this.splitorders(this.props.orders);
+  }
 
   render() {
     const { selectedStock, stocks, selectingStock, trades } = this.props;
-    this.organiseOrders(this.props.orders);
     return (
       <div>
         <h1>Order Book (Main)</h1>
@@ -32,10 +36,10 @@ class OrderBook extends Component {
         </div>
         <div className="AskBidTable row container-fluid border">
           <div className="col container border m-2">
-            <Orders />
+            <Orders orders={this.state.buyOrders} type="BID" />
           </div>
           <div className="col container border m-2">
-            <Orders />
+            <Orders orders={this.state.sellOrders} type="ASK" />
           </div>
         </div>
       </div>
