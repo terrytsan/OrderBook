@@ -33,4 +33,5 @@ public interface TradeDao {
      * @param trade Trade to be added to the system.
      */
     void addTrade(Trade trade);
+
 }
