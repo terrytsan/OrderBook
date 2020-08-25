@@ -5,14 +5,18 @@ class TickerFeed extends Component {
   state = {};
   render() {
     return (
-      <div className="fixed-bottom">
-        <Ticker speed={10}>
-          {({ index }) => (
-            <>
-              <h5>Not yet Functioning!!!</h5>
-            </>
-          )}
-        </Ticker>
+      <div>
+        <br />
+        <br />
+        <div className="fixed-bottom">
+          <Ticker speed={10}>
+            {({ index }) => (
+              <>
+                <h5>Not yet Functioning!!!</h5>
+              </>
+            )}
+          </Ticker>
+        </div>
       </div>
     );
   }
