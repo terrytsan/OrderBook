@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import { Chart } from "react-charts";
 
 class TradeTable extends Component {
   state = {};
   render() {
-    const { trades } = this.props;
-    return <h2>Trade Table</h2>;
+    let { trades } = this.props;
+    return (
+      <div className="container border m-4">
+        <h2>Trade Table</h2>
+      </div>
+    );
   }
 }
 
