@@ -9,7 +9,7 @@ const Navigation = (props) => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link href="/">OrderBook</Nav.Link>
-          <Nav.Link href="/historicalTrades">Historical Data</Nav.Link>
+          <Nav.Link href="/pastTrades">Historical Data</Nav.Link>
           <Nav.Link href="/addOrder">Add Order</Nav.Link>
           <Nav.Link href="/manageOrders">Order Manager</Nav.Link>
         </Nav>
