@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 class ManageOrder extends Component {
+  state = {};
   render() {
-    const { id, time, price, quantity, side, partyId } = this.props.order;
+    const { id, time, price, quantity, side, party } = this.props.order;
     const { counterParties } = this.props;
     return (
       <div className="row m-2" id={id}>
@@ -12,26 +13,28 @@ class ManageOrder extends Component {
         <div className="quantity col">{quantity}</div>
         <div className="price col">{price}</div>
         <div className="side col">{side}</div>
-        <div className="partySymbol col">
-          {this.getOrderParty(partyId, counterParties)}
-        </div>
+        <div className="partySymbol col">{party.symbol}</div>
         <div className="col">
-          <Nav.Link
-            href="/orderDetails"
-            onClick={() => this.props.getAllOrderDetails(id)}
+          <button
+            className="btn btn-outline-primary btn-sm"
+            onClick={() => {
+              this.props.getAllOrderDetails(id);
+            }}
           >
-            <button className="btn btn-outline-primary btn-sm">Details</button>
-          </Nav.Link>
+            Details
+          </button>
         </div>
         <div className="col">
-          <Nav.Link href="/updateOrder">
-            <button
-              className="btn btn-outline-primary btn-sm"
-              href="/updateOrder"
-            >
+          <Link
+            to={{
+              pathname: "/updateOrder",
+              aboutOrder: { order: this.props.order },
+            }}
+          >
+            <button className="btn btn-outline-primary btn-sm">
               Update Order
             </button>
-          </Nav.Link>
+          </Link>
         </div>
         <div className="col">
           <button className="btn btn-outline-danger btn-sm">
@@ -41,13 +44,6 @@ class ManageOrder extends Component {
       </div>
     );
   }
-
-  getOrderParty = (orderPartyID, counterParties) => {
-    const orderParty = counterParties.find(
-      (party) => party.id === orderPartyID
-    );
-    return orderParty.symbol;
-  };
 }
 
 export default ManageOrder;
