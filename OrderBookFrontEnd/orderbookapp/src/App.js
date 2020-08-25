@@ -18,17 +18,19 @@ import OrderDetails from "./pages/orderDetails.jsx";
 class App extends Component {
   state = {
     selectedStock: {
-      id: 2,
+      id: 1,
       stockExchangeId: 1,
-      symbol: "TSL",
-      maxQuantity: 200,
-      tickSize: 10,
+      symbol: "GOOG.L",
+      name: "Google (London)",
+      maxQuantity: 100,
+      tickSize: 1,
     },
     stocks: [
       {
         id: 1,
         stockExchangeId: 1,
         symbol: "GOOG.L",
+        name: "Google (London)",
         maxQuantity: 100,
         tickSize: 1,
       },
@@ -36,22 +38,61 @@ class App extends Component {
         id: 2,
         stockExchangeId: 1,
         symbol: "TSL",
+        name: "Tesla",
         maxQuantity: 200,
         tickSize: 10,
       },
     ],
     orders: [
-      { id: 1, time: "5:00:34", quantity: 200, price: "5.25", type: "BUY" },
-      { id: 2, time: "5:00:50", quantity: 150, price: "10.25", type: "SELL" },
+      {
+        id: 1,
+        time: "5:00:34",
+        quantity: 200,
+        price: "5.25",
+        side: "BUY",
+        partyId: 1,
+        stockId: 1,
+      },
+      {
+        id: 2,
+        time: "5:00:50",
+        quantity: 150,
+        price: "10.25",
+        side: "SELL",
+        partyId: 2,
+        stockId: 1,
+      },
+    ],
+    currentOrderRecord: [
+      {
+        id: 1,
+        time: "5:00:34",
+        quantity: 200,
+        price: "5.25",
+        side: "BUY",
+        partyId: 1,
+        stockId: 1,
+      },
     ],
     trades: [],
-    counterParties: ["CP1", "CP2"],
+    counterParties: [
+      { id: 1, symbol: "CP1", name: "Counter Party 1" },
+      { id: 2, symbol: "CP2", name: "Counter Party 2" },
+    ],
     types: ["BUY", "SELL"],
   };
 
   selectingStock = (stock) => {
     const selectedStock = stock;
     this.setState({ selectedStock });
+  };
+
+  getAllOrderDetails = (orderId) => {
+    //INCLUDE FETCH FROM THE CONTROLLER
+    //SET CURRENTORDERRECORD
+    const currentOrderRecord = this.state.orders.find(
+      (order) => order.id === orderId
+    );
   };
 
   render() {
@@ -69,6 +110,7 @@ class App extends Component {
                   stocks={this.state.stocks}
                   selectingStock={this.selectingStock}
                   trades={this.state.trades}
+                  orders={this.state.orders}
                 />
               )}
               exact
@@ -86,10 +128,36 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/orderDetails" component={OrderDetails} />
-            <Route path="/updateOrder" component={UpdateOrder} />
-            <Route path="/manageOrders" component={OrderManager} />
+            <Route
+              path="/orderDetails"
+              render={(props) => (
+                <OrderDetails
+                  {...props}
+                  counterParties={this.state.counterParties}
+                  orderRecord={this.state.currentOrderRecord}
+                />
+              )}
+            />
+            <Route
+              path="/updateOrder"
+              render={(props) => <UpdateOrder {...props} />}
+            />
+            <Route
+              path="/manageOrders"
+              render={(props) => (
+                <OrderManager
+                  {...props}
+                  selectedStock={this.state.selectedStock}
+                  stocks={this.state.stocks}
+                  selectingStock={this.selectingStock}
+                  orders={this.state.orders}
+                  counterParties={this.state.counterParties}
+                  getAllOrderDetails={this.getAllOrderDetails}
+                />
+              )}
+            />
             <Route path="/help" component={Help} />
+            <Route component={Error} />
           </Switch>
         </BrowserRouter>
         <TickerFeed />
