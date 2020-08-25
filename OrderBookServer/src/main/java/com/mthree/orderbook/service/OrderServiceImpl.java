@@ -9,11 +9,15 @@ import com.mthree.orderbook.entity.*;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Service
 public class OrderServiceImpl implements OrderService {
+	
+	private final OrderMatcher matcher;
 	
 	private final OrderDao orderDao;
 	
@@ -23,14 +27,17 @@ public class OrderServiceImpl implements OrderService {
 	
 	private final TradeDao tradeDao;
 	
+	private final Clock clock;
+	
 	public OrderServiceImpl(OrderDao orderDao, StockDao stockDao, PartyDao partyDao,
-	                        TradeDao tradeDao) {
+	                        TradeDao tradeDao, Clock clock, OrderMatcher matcher) {
 		this.orderDao = orderDao;
 		this.stockDao = stockDao;
 		this.partyDao = partyDao;
 		this.tradeDao = tradeDao;
+		this.clock = clock;
+		this.matcher = matcher;
 	}
-	
 	
 	/**
 	 * Updates the specified order's state and persist the changes.
@@ -42,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setState(newState);
 		// Update the version number
 		order.setVersion(order.getVersion() + 1);
+		order.setTimestamp(LocalDateTime.now(clock));
 		orderDao.updateOrder(order);
 	}
 	
@@ -74,7 +82,8 @@ public class OrderServiceImpl implements OrderService {
 		Stock stock = stockDao.getStockById(stockId);
 		Party party = partyDao.getPartyById(partyId);
 		
-		Order order = new Order(stock, party, Side.valueOf(side.toUpperCase()), quantity, price, LocalDateTime.now(),
+		Order order = new Order(stock, party, Side.valueOf(side.toUpperCase()), quantity, price,
+		                        LocalDateTime.now(clock),
 		                        State.LIVE, 1);
 		
 		// add the order to the database
@@ -89,16 +98,18 @@ public class OrderServiceImpl implements OrderService {
 		Order order = orderDao.getOrderById(orderId);
 		
 		boolean priceChanged = !order.getPrice().equals(price);
+		boolean quantityChanged = order.getQuantity() != quantity;
 		
 		order.setQuantity(quantity);
 		order.setPrice(price);
-		// Update the version number
+		// Update the version number and timestamp
 		order.setVersion(order.getVersion() + 1);
+		order.setTimestamp(LocalDateTime.now(clock));
 		
 		// Update the order
 		orderDao.updateOrder(order);
 		
-		if (priceChanged) {
+		if (priceChanged || quantityChanged) {
 			processOrder(order);
 		}
 	}
@@ -119,7 +130,6 @@ public class OrderServiceImpl implements OrderService {
 		}
 		
 		// try and find a match
-		OrderMatcher matcher = new OrderMatcherImpl();
 		Trade generatedTrade = matcher.findMatch(order, opposingOrders);
 		
 		if (generatedTrade == null) {

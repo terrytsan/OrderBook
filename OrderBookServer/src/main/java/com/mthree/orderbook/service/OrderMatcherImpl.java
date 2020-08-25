@@ -3,13 +3,21 @@ package com.mthree.orderbook.service;
 import com.mthree.orderbook.entity.Order;
 import com.mthree.orderbook.entity.Side;
 import com.mthree.orderbook.entity.Trade;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class OrderMatcherImpl implements OrderMatcher {
+	
+	@Autowired
+	private Clock clock;
+	
 	@Override
 	public Trade findMatch(Order recipientOrder, List<Order> opposingOrders) {
 		if (recipientOrder.getSide() == Side.BUY) {
@@ -26,7 +34,7 @@ public class OrderMatcherImpl implements OrderMatcher {
 					return new Trade(recipientOrder, sellOrder,
 					                 Math.min(recipientOrder.getQuantity(), sellOrder.getQuantity()),
 					                 sellOrder.getPrice(),
-					                 LocalDateTime.now());
+					                 LocalDateTime.now(clock));
 				}
 			}
 		} else if (recipientOrder.getSide() == Side.SELL) {
@@ -43,7 +51,7 @@ public class OrderMatcherImpl implements OrderMatcher {
 					return new Trade(buyOrder, recipientOrder,
 					                 Math.min(buyOrder.getQuantity(), recipientOrder.getQuantity()),
 					                 buyOrder.getPrice(),
-					                 LocalDateTime.now());
+					                 LocalDateTime.now(clock));
 				}
 			}
 		}
