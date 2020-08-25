@@ -1,32 +1,48 @@
 import React, { Component } from "react";
-import { Form } from "react-bootstrap";
+
+import Select from "./input/select.jsx";
 
 class Stock extends Component {
+  state = {
+    Stocks: [],
+    selectedStock: "",
+  };
+
+  getListOfStocks = (allStocks) => {
+    let Stocks = [];
+    allStocks.map((stock) => Stocks.push(stock.symbol));
+    this.setState({ Stocks });
+  };
+
+  handleChange = (event) => {
+    let name = event.target.name;
+    let value = event.target.value;
+    console.log("Name: " + name);
+    console.log("Value: " + value);
+    const chosenStock = this.props.stocks.find(
+      (stock) => stock.symbol === value
+    );
+    this.props.selectingStock(chosenStock);
+  };
+
+  componentDidMount() {
+    this.getListOfStocks(this.props.stocks);
+  }
+
   render() {
-    const { selectedStock, stocks } = this.props;
+    const { selectedStock } = this.props;
     return (
       <React.Fragment>
         <div className="col">
           <h2>{selectedStock.symbol}</h2>
-          <Form className="row">
-            <select
-              id="chosenStock"
-              defaultValue={selectedStock}
-              className="form-control form-control-sm"
-            >
-              {stocks.map((stock) => (
-                <option value={stock} key={stock.id}>
-                  {stock.symbol}
-                </option>
-              ))}
-            </select>
-            <button
-              className="uk-button uk-button-mini"
-              onClick={() => this.props.selectingStock(this.chosenStock.value)}
-            >
-              Get Stock
-            </button>
-          </Form>
+          <Select
+            title={"Stock:"}
+            name={"chosenStock"}
+            value={selectedStock.id}
+            placeholder={"Select Stock..."}
+            options={this.state.Stocks}
+            onChange={this.handleChange}
+          />
         </div>
         <div className="col">
           <h2>Stock Details</h2>

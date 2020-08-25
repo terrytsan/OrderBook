@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Stock from "../components/stock.jsx";
-import TradeTable from "../components/historicTrades/tradeTable.jsx";
+import TradeGraph from "./historicTrades/tradeGraph.jsx";
 
 class StockAndTrade extends Component {
   state = {};
@@ -19,7 +19,7 @@ class StockAndTrade extends Component {
           </div>
         </div>
         <div className="col m-2 border">
-          <TradeTable trades={trades} />
+          <TradeGraph trades={trades} />
         </div>
       </div>
     );
