@@ -11,16 +11,11 @@ class StockAndTrade extends Component {
       <div className="row container-fluid border">
         <div className="col border m-2">
           <div className="row">
-            <div className="col">
-              <Stock
-                selectedStock={selectedStock}
-                stocks={stocks}
-                selectingStock={selectingStock}
-              />
-            </div>
-            <div className="col">
-              <h2>Stock Details</h2>
-            </div>
+            <Stock
+              selectedStock={selectedStock}
+              stocks={stocks}
+              selectingStock={selectingStock}
+            />
           </div>
         </div>
         <div className="col m-2 border">
