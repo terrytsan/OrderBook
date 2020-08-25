@@ -1,68 +1,93 @@
 import React, { Component } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 class NewOrder extends Component {
   state = {};
+
   render() {
-    const { counterParties, types, stocks } = this.props;
+    let {
+      counterParties,
+      types,
+      stocks,
+      handleChange,
+      newOrder,
+      handleSubmit,
+    } = this.props;
     return (
-      <Form className="container border" onSubmit={this.handleFormSubmission}>
-        <div class="form-group">
-          <label for="orderParty">Party</label>
-          <select class="form-control" id="orderParty">
+      <Form className="container border" onSubmit={this.handleSubmit}>
+        <Form.Group controlId="orderParty">
+          <Form.Label>Party</Form.Label>
+          <Form.Control
+            as="select"
+            name="Party"
+            onChange={handleChange}
+            defaultValue={newOrder.partyId}
+          >
             {counterParties.map((party) => (
-              <option key={party.id} value={party}>
+              <option key={party.id} value={party.id}>
                 {party.symbol}, ({party.name})
               </option>
             ))}
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="typeOfOrder">Type Of Order (Buy/Sell)</label>
-          <select class="form-control" id="typeOfOrder">
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="orderSide">
+          <Form.Label>Type Of Order (Buy/Sell)</Form.Label>
+          <Form.Control
+            as="select"
+            name="Side"
+            onChange={handleChange}
+            defaultValue={newOrder.side}
+          >
             {types.map((type) => (
               <option key={type} value={type}>
                 {type}
               </option>
             ))}
-          </select>
-        </div>
-        <div class="form-group" onChange={this.handleStockChange}>
-          <label for="stockSelection">Stock</label>
-          <select class="form-control" id="stockSelection">
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="orderStock">
+          <Form.Label>Stock</Form.Label>
+          <Form.Control
+            as="select"
+            name="Stock"
+            onChange={handleChange}
+            defaultValue={newOrder.stockId}
+          >
             {stocks.map((stock) => (
-              <option key={stock.id} value={stock.symbol}>
+              <option key={stock.id} value={stock.id}>
                 {stock.symbol}, ({stock.name})
               </option>
             ))}
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="quantity">Quantity</label>
-          <input
+          </Form.Control>
+        </Form.Group>
+        <Form.Group controlId="orderQuantity">
+          <Form.Label>Quantity</Form.Label>
+          <Form.Control
             type="number"
-            class="form-control"
-            id="quantity"
-            placeholder="Number of shares"
+            name="Quantity"
+            placeholder="Enter number of shares"
+            onChange={handleChange}
             required
           />
-        </div>
-        <div class="form-group">
-          <label for="price">Price</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="orderPrice">
+          <Form.Label>Price</Form.Label>
+          <Form.Control
             type="number"
-            class="form-control"
-            id="price"
-            placeholder="Order Price"
+            name="Price"
+            placeholder="Enter number of shares"
+            onChange={handleChange}
             required
+            min="0"
+            step=".01"
           />
-        </div>
-        <button type="reset" class="btn btn-outline-warning">
+        </Form.Group>
+        <Button type="reset" className="m-2" variant="outline-warning">
           Clear
-        </button>
-        <button type="submit" class="btn btn-outline-success">
+        </Button>
+        <Button type="submit" className="m-2" variant="outline-success">
           Submit
-        </button>
+        </Button>
       </Form>
     );
   }
