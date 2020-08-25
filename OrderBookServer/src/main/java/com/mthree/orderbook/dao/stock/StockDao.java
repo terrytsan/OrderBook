@@ -2,6 +2,8 @@ package com.mthree.orderbook.dao.stock;
 
 import com.mthree.orderbook.entity.Stock;
 
+import java.util.List;
+
 public interface StockDao {
 
     /**
@@ -12,9 +14,9 @@ public interface StockDao {
     Stock getStockById(int id);
 
     /**
-     * Returns the Stock associated with the stock exchange with the id provided.
+     * Returns a list of stocks associated with a stock exchange.
      * @param stockExchangeId ID of the stock exchange.
-     * @return Stock associated with the stock exchange.
+     * @return List of Stocks.
      */
-    Stock getStockByStockExchange(int stockExchangeId);
+    List<Stock> getStocksByStockExchange(int stockExchangeId);
 }

@@ -3,25 +3,25 @@ package com.mthree.orderbook.entity;
 import java.util.Objects;
 
 public class StockExchange {
-	private int it;
+	private int id;
 	private String name;
 	private String centralCounterParty;
 	
 	public StockExchange() {
 	}
 	
-	public StockExchange(int it, String name, String centralCounterParty) {
-		this.it = it;
+	public StockExchange(int id, String name, String centralCounterParty) {
+		this.id = id;
 		this.name = name;
 		this.centralCounterParty = centralCounterParty;
 	}
 	
-	public int getIt() {
-		return it;
+	public int getId() {
+		return id;
 	}
 	
-	public void setIt(int it) {
-		this.it = it;
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getName() {
@@ -45,13 +45,13 @@ public class StockExchange {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		StockExchange that = (StockExchange) o;
-		return it == that.it &&
+		return id == that.id &&
 			       Objects.equals(name, that.name) &&
 			       Objects.equals(centralCounterParty, that.centralCounterParty);
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(it, name, centralCounterParty);
+		return Objects.hash(id, name, centralCounterParty);
 	}
 }

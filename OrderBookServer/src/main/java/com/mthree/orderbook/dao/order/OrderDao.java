@@ -56,6 +56,7 @@ public interface OrderDao {
     /**
      * Returns the full history of the order with the id provided.
      * @param orderId ID of order to search for.
+     * @return List of orders that make up an orders history.
      */
-    void getOrderHistoryWithOrderId(int orderId);
+    List<Order> getOrderHistoryWithOrderId(int orderId);
 }
