@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
@@ -30,10 +32,15 @@ public class TradeDaoImpl implements TradeDao {
                         "WHERE stock.stockExchangeId = ?";
         List<Trade> trades = jdbc.query(GET_TRADES, new TradeMapper(), stockExchangeId);
 
-        for(Trade trade : trades) {
-            assignBuyAndSellOrders(trade);
+        trades.sort(Comparator.comparing(Trade::getTimestamp));
+
+        List<Trade> resultingTrades = new ArrayList<>();
+
+        for(int i = 0; i < trades.size() && i < count; i++) {
+            assignBuyAndSellOrders(trades.get(trades.size() - 1 - i));
+            resultingTrades.add(trades.get(trades.size() - 1 - i));
         }
-        return trades;
+        return resultingTrades;
     }
 
     @Override
@@ -70,7 +77,8 @@ public class TradeDaoImpl implements TradeDao {
         final String ADD_TRADE =
                 "INSERT INTO trade(buyOrderId, sellOrderId, quantity, price, timestamp) " +
                         "VALUES(?, ?, ?, ?, ?)";
-        jdbc.update(ADD_TRADE);
+        jdbc.update(ADD_TRADE, trade.getBuyOrder().getId(), trade.getSellOrder().getId(), trade.getQuantity(),
+                trade.getPrice(), trade.getTimestamp());
 
         trade.setId(jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
     }

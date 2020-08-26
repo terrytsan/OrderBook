@@ -28,6 +28,13 @@ public class PartyDaoImpl implements PartyDao {
         return jdbc.query(GET_ALL, new PartyMapper());
     }
 
+    @Override
+    public void addParty(Party party) {
+        final String ADD_PARTY = "INSERT INTO party(symbol, name) VALUES(?, ?)";
+        jdbc.update(ADD_PARTY, party.getSymbol(), party.getName());
+        party.setId(jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
+    }
+
     public static final class PartyMapper implements RowMapper<Party> {
         @Override
         public Party mapRow(ResultSet rs, int index) throws SQLException {

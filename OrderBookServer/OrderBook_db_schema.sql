@@ -17,7 +17,7 @@ CREATE TABLE stock (
     name            VARCHAR(50) NOT NULL,
     symbol          VARCHAR(10) NOT NULL,
     maxQuantity     INT NOT NULL,
-    tickSize        DECIMAL NOT NULL,
+    tickSize        DECIMAL(5,2) NOT NULL,
     CONSTRAINT pk_stock PRIMARY KEY (id),
     CONSTRAINT fk_stock_stockExchange FOREIGN KEY (stockExchangeId) REFERENCES stockExchange (id)
 );
@@ -38,7 +38,7 @@ CREATE TABLE `order` (
     price    DECIMAL NOT NULL,
     state    ENUM ('CANCELLED', 'LIVE', 'COMPLETED') NOT NULL,
     version  INT NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
+    timestamp TIMESTAMP(6) NOT NULL,
     CONSTRAINT pk_order PRIMARY KEY (id),
     CONSTRAINT fk_order_stock FOREIGN KEY (stockId) REFERENCES stock (id),
     CONSTRAINT fk_order_party FOREIGN KEY (partyId) REFERENCES party (id)
@@ -51,7 +51,7 @@ CREATE TABLE orderHistory (
     price     DECIMAL NOT NULL,
     state     ENUM ('CANCELLED', 'LIVE', 'COMPLETED') NOT NULL,
     version   INT NOT NULL,
-    timestamp TIMESTAMP NOT NULL,
+    timestamp TIMESTAMP(6) NOT NULL,
     CONSTRAINT pk_orderHistory PRIMARY KEY (id),
     CONSTRAINT fk_orderHistory_order FOREIGN KEY (orderId) REFERENCES `order` (id)
 );

@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -40,10 +41,21 @@ public class StockDaoImpl implements StockDao{
         return stocks;
     }
 
+    @Override
+    public void addStock(Stock stock) {
+        final String ADD_STOCK =
+                "INSERT INTO stock(stockExchangeId, name, symbol, maxQuantity, tickSize) " +
+                        "VALUES(?, ?, ?, ?, ?)";
+        jdbc.update(ADD_STOCK, stock.getStockExchange().getId(), stock.getName(), stock.getSymbol(),
+                stock.getMaxQuantity(), stock.getTickSize().toString());
+
+        stock.setId(jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
+    }
+
     private Stock assignStockExchange(Stock stock) {
         final String GET_STOCK_EXCHANGE =
                 "SELECT * FROM stockExchange " +
-                        "INNER JOIN stock ON stock.stockExchangeId = stockExhange.id " +
+                        "INNER JOIN stock ON stock.stockExchangeId = stockExchange.id " +
                         "WHERE stock.id = ?";
         stock.setStockExchange(jdbc.queryForObject(GET_STOCK_EXCHANGE,
                 new StockExchangeDaoImpl.StockExchangeMapper(), stock.getId()));
@@ -58,7 +70,7 @@ public class StockDaoImpl implements StockDao{
             stock.setName(rs.getString("name"));
             stock.setSymbol(rs.getString("symbol"));
             stock.setMaxQuantity(rs.getInt("maxQuantity"));
-            stock.setTickSize(rs.getBigDecimal("tickSize"));
+            stock.setTickSize(new BigDecimal(rs.getString("tickSize")));
             return stock;
         }
     }

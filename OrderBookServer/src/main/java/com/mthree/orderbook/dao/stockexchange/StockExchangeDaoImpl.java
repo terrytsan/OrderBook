@@ -38,4 +38,14 @@ public class StockExchangeDaoImpl implements StockExchangeDao{
             return stockExchange;
         }
     }
+
+    @Override
+    public void addStockExchange(StockExchange stockExchange) {
+        final String ADD_STOCK_EXCHANGE =
+                "INSERT INTO stockExchange(name, centralCounterParty) " +
+                        "VALUES(?, ?)";
+        jdbc.update(ADD_STOCK_EXCHANGE, stockExchange.getName(), stockExchange.getCentralCounterParty());
+
+        stockExchange.setId(jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
+    }
 }

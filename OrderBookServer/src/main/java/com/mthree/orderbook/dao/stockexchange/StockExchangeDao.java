@@ -18,4 +18,10 @@ public interface StockExchangeDao {
      * @return List of all stock exchanges.
      */
     List<StockExchange> getAll();
+
+    /**
+     * Adds a stock exchange to the database.
+     * @param stockExchange StockExchange to be added.
+     */
+    void addStockExchange(StockExchange stockExchange);
 }

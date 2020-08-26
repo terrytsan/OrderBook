@@ -1,5 +1,6 @@
-package com.mthree.orderbook.dao.stockexchange;
+package com.mthree.orderbook.dao.stock;
 
+import com.mthree.orderbook.dao.stockexchange.StockExchangeDao;
 import com.mthree.orderbook.entity.Stock;
 import com.mthree.orderbook.entity.StockExchange;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +19,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class StockExchangeDaoImplTest {
+class StockDaoImplTest {
 
     @Autowired
     JdbcTemplate jdbc;
 
     @Autowired
+    StockDao stockDao;
+
+    @Autowired
     StockExchangeDao stockExchangeDao;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() {
         final String DELETE_TRADES = "DELETE FROM trade";
         jdbc.update(DELETE_TRADES);
 
@@ -53,11 +58,20 @@ class StockExchangeDaoImplTest {
         stockExchange.setCentralCounterParty("TESTING");
         stockExchangeDao.addStockExchange(stockExchange);
 
-        assertEquals(stockExchange, stockExchangeDao.getStockExchangeById(stockExchange.getId()));
+        Stock stock = new Stock();
+        stock.setStockExchange(stockExchange);
+        stock.setName("TEST STOCK");
+        stock.setSymbol("TEST");
+        stock.setMaxQuantity(100);
+        stock.setTickSize(new BigDecimal("0.01"));
+        stockDao.addStock(stock);
+
+        Stock result = stockDao.getStockById(stock.getId());
+        assertEquals(stock, result);
     }
 
     @Test
-    public void testAddGetAll() {
+    public void addGetByStockExchange() {
         StockExchange stockExchange = new StockExchange();
         stockExchange.setName("TEST");
         stockExchange.setCentralCounterParty("TESTING");
@@ -68,16 +82,34 @@ class StockExchangeDaoImplTest {
         stockExchange2.setCentralCounterParty("TESTING");
         stockExchangeDao.addStockExchange(stockExchange2);
 
-        List<StockExchange> stockExchanges = stockExchangeDao.getAll();
+        Stock stock = new Stock();
+        stock.setStockExchange(stockExchange);
+        stock.setName("TEST STOCK");
+        stock.setSymbol("TEST");
+        stock.setMaxQuantity(100);
+        stock.setTickSize(new BigDecimal("0.01"));
+        stockDao.addStock(stock);
 
-        assertEquals(stockExchanges.get(0), stockExchange);
-        assertEquals(stockExchanges.get(1), stockExchange2);
+        Stock stock2 = new Stock();
+        stock2.setStockExchange(stockExchange2);
+        stock2.setName("TEST STOCK 2");
+        stock2.setSymbol("TEST2");
+        stock2.setMaxQuantity(80);
+        stock2.setTickSize(new BigDecimal("0.02"));
+        stockDao.addStock(stock2);
+
+        assertEquals(stock, stockDao.getStocksByStockExchange(stockExchange.getId()).get(0));
+        assertEquals(stock2, stockDao.getStocksByStockExchange(stockExchange2.getId()).get(0));
     }
 
     @Test
-    public void testGetAllEmpty() {
-        List<StockExchange> stockExchanges = new ArrayList<>();
+    public void testGetByStockExchangeEmpty() {
+        StockExchange stockExchange = new StockExchange();
+        stockExchange.setName("TEST");
+        stockExchange.setCentralCounterParty("TESTING");
+        stockExchangeDao.addStockExchange(stockExchange);
 
-        assertEquals(stockExchanges, stockExchangeDao.getAll());
+        List<Stock> stocks = new ArrayList<>();
+        assertEquals(stocks, stockDao.getStocksByStockExchange(stockExchange.getId()));
     }
 }

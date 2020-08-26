@@ -18,4 +18,10 @@ public interface PartyDao {
      * @return List of Party objects.
      */
     List<Party> getAll();
+
+    /**
+     * Adds a party to the database.
+     * @param party Party to be added to the database.
+     */
+    void addParty(Party party);
 }

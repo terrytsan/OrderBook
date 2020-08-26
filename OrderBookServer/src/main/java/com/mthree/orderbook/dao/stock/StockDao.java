@@ -19,4 +19,10 @@ public interface StockDao {
      * @return List of Stocks.
      */
     List<Stock> getStocksByStockExchange(int stockExchangeId);
+
+    /**
+     * Adds a Stock to the database.
+     * @param stock Stock to be added.
+     */
+    void addStock(Stock stock);
 }
