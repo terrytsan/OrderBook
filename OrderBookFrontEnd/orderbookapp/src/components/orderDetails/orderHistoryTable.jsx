@@ -5,21 +5,22 @@ import OrderHistory from "./orderHistory.jsx";
 class OrderHistoryTable extends Component {
   state = {};
   render() {
-    const { orders, counterParties } = this.props;
+    const { orderRecords } = this.props;
     return (
-      <div className="container-fluid border m-2">
+      <div className="container border m-2">
         <div className="row m-2">
-          <div className="id col">ID</div>
-          <div className="time col">Time</div>
-          <div className="quantity col">Quantity</div>
-          <div className="price col">Price</div>
-          <div className="side col">Side</div>
+          <div className="versionNo col">Version Number</div>
+          <div className="size col">Size</div>
+          <div className="quantity col">Bid</div>
+          <div className="price col">Sale Price</div>
+          <div className="price col">Quantity Sold</div>
+          <div className="price col">Time Of Trade</div>
+          <div className="price col">CounterParty</div>
         </div>
-        {orders.map((order) => (
+        {orderRecords.map((orderRecord) => (
           <OrderHistory
-            key={orders.indexOf(order)}
-            order={order}
-            counterParties={counterParties}
+            key={orderRecords.indexOf(orderRecord)}
+            order={orderRecord}
           />
         ))}
       </div>
