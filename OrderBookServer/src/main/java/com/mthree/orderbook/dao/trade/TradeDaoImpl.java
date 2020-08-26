@@ -1,12 +1,10 @@
 package com.mthree.orderbook.dao.trade;
 
-import com.mthree.orderbook.dao.order.OrderDao;
 import com.mthree.orderbook.dao.order.OrderDaoImpl;
 import com.mthree.orderbook.dao.party.PartyDaoImpl;
 import com.mthree.orderbook.dao.stock.StockDaoImpl;
 import com.mthree.orderbook.dao.stockexchange.StockExchangeDaoImpl;
 import com.mthree.orderbook.entity.Order;
-import com.mthree.orderbook.entity.Side;
 import com.mthree.orderbook.entity.Stock;
 import com.mthree.orderbook.entity.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -167,7 +164,7 @@ public class TradeDaoImpl implements TradeDao {
             trade.setQuantity(rs.getInt("quantity"));
             trade.setPrice(rs.getBigDecimal("price"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            trade.setTimestamp(LocalDateTime.parse(rs.getString("timestamp"), formatter));
+            trade.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
             return trade;
         }
     }
