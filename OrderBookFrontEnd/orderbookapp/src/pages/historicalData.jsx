@@ -2,15 +2,29 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 
+import Stock from "./../components/stock.jsx";
 import TradeTable from "./../components/historicTrades/tradeTable.jsx";
 import TradeGraph from "./../components/historicTrades/tradeGraph.jsx";
 
 class HistoricalData extends Component {
   render() {
-    let { trades, stockExchange } = this.props;
+    let {
+      selectedStock,
+      stocks,
+      selectingStock,
+      trades,
+      stockExchange,
+    } = this.props;
     return (
       <div>
         <h1>Historical Data</h1>
+        <div className="row m-2">
+          <Stock
+            selectedStock={selectedStock}
+            stocks={stocks}
+            selectingStock={selectingStock}
+          />
+        </div>
         <BrowserRouter>
           <Switch>
             <Route
