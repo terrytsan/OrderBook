@@ -24,6 +24,57 @@ let stockExchange = {
   centralCounterParty: "LCH",
 };
 
+let liveOrders = [
+  {
+    id: 1,
+    time: "5:00:34",
+    quantity: 200,
+    price: "5.25",
+    side: "BUY",
+    party: { id: 1, symbol: "CP1", name: "Counter Party 1" },
+    stock: {
+      id: 1,
+      stockExchangeId: 1,
+      symbol: "GOOG.L",
+      name: "Google (London)",
+      maxQuantity: 100,
+      tickSize: 1,
+    },
+  },
+  {
+    id: 2,
+    time: "5:00:50",
+    quantity: 150,
+    price: "10.25",
+    side: "SELL",
+    party: { id: 2, symbol: "CP2", name: "Counter Party 2" },
+    stock: {
+      id: 1,
+      stockExchangeId: 1,
+      symbol: "GOOG.L",
+      name: "Google (London)",
+      maxQuantity: 100,
+      tickSize: 1,
+    },
+  },
+  {
+    id: 3,
+    time: "5:01:00",
+    quantity: 1000,
+    price: "10.25",
+    side: "SELL",
+    party: { id: 2, symbol: "CP2", name: "Counter Party 2" },
+    stock: {
+      id: 2,
+      stockExchangeId: 1,
+      symbol: "TSL",
+      name: "Tesla",
+      maxQuantity: 200,
+      tickSize: 10,
+    },
+  },
+];
+
 class App extends Component {
   state = {
     selectedStock: {
@@ -52,40 +103,7 @@ class App extends Component {
         tickSize: 10,
       },
     ],
-    orders: [
-      {
-        id: 1,
-        time: "5:00:34",
-        quantity: 200,
-        price: "5.25",
-        side: "BUY",
-        party: { id: 1, symbol: "CP1", name: "Counter Party 1" },
-        stock: {
-          id: 1,
-          stockExchangeId: 1,
-          symbol: "GOOG.L",
-          name: "Google (London)",
-          maxQuantity: 100,
-          tickSize: 1,
-        },
-      },
-      {
-        id: 2,
-        time: "5:00:50",
-        quantity: 150,
-        price: "10.25",
-        side: "SELL",
-        party: { id: 2, symbol: "CP2", name: "Counter Party 2" },
-        stock: {
-          id: 1,
-          stockExchangeId: 1,
-          symbol: "GOOG.L",
-          name: "Google (London)",
-          maxQuantity: 100,
-          tickSize: 1,
-        },
-      },
-    ],
+    orders: [],
     currentOrderRecord: {},
     trades: [],
     counterParties: [
@@ -201,6 +219,19 @@ class App extends Component {
     const selectedStock = stock;
     this.setState({ selectedStock }, () => {
       console.log(this.state.selectedStock);
+      this.filterStockOrders(selectedStock);
+    });
+  };
+
+  filterStockOrders = (selectedStock) => {
+    console.log(this.state.selectedStock);
+    const allOrders = liveOrders;
+    const orders = allOrders.filter(
+      (order) => order.stock.id === selectedStock.id
+    );
+    console.log(orders);
+    this.setState({ orders }, () => {
+      console.log(orders);
     });
   };
 
