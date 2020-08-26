@@ -132,7 +132,7 @@ class App extends Component {
       partyId: "1",
       stockId: "1",
     },
-    retrievedOrderDetails: [
+    currentOrderHistory: [
       {
         id: 3,
         time: "5:01:00",
@@ -150,6 +150,7 @@ class App extends Component {
         },
       },
     ],
+    currentOrderTrades: [],
     trades: [],
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
@@ -296,7 +297,8 @@ class App extends Component {
     //SET CURRENTORDERRECORD
     //IT TAKES A WHILE TO COMPLETE THE SET STATE FUNCTION - CHECK IT OUT!!!!!!!!!!!!!!!!!!!!!!
     this.retrieveOrderDetails(orderId);
-
+    this.getAllOrderHistory(orderId);
+    this.getAllOrderTrades(orderId);
     //Then this will retrieve all the data in the database using that order ID
     //Allocating it to this.state.retrievedOrderDetails
   };
@@ -307,6 +309,18 @@ class App extends Component {
     this.setState({ currentOrderRecord: OrderRecord }, () => {
       console.log(this.state.currentOrderRecord);
     });
+  };
+
+  //This method is used to get all the orders history
+  getAllOrderHistory = (orderID) => {
+    //INCLUDE FETCH METHOD HERE
+    //sets to the state =======>>>>>>> currentOrderHistory
+  };
+
+  //This method is used to get all the trades for an order
+  getAllOrderTrades = (orderID) => {
+    //INCLUDE FETCH METHOD HERE
+    //sets to the state =======>>>>>>> currentOrderTrades
   };
 
   render() {
@@ -362,7 +376,8 @@ class App extends Component {
                 <OrderDetails
                   {...props}
                   order={this.state.currentOrderRecord}
-                  orderRecords={this.state.retrievedOrderDetails}
+                  orderRecords={this.state.currentOrderHistory}
+                  allOrderTrades={this.state.currentOrderTrades}
                 />
               )}
             />
