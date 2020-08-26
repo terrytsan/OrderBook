@@ -276,6 +276,17 @@ class App extends Component {
     });
   };
 
+  handleCancelOrderClick = (idToCancel) => {
+    console.log("Cancelling order");
+
+    // let idToCancel = event.target.value;
+
+    fetch(SERVICE_URL + 'cancelOrder?orderId=' + idToCancel, {
+      method: 'post'
+    }).then(response => response.text()).then(() => this.filterStockOrders(this.state.selectedStock))
+
+  }
+
   // Called when the stock combo-box is changed
   selectingStock = (stock) => {
     const selectedStock = stock;
@@ -299,6 +310,9 @@ class App extends Component {
 
   //Will fetch the trades
   filterStockTrades = (selectedStock) => {
+    // Gets all the trades for the stock exchange
+    fetch(SERVICE_URL + "trades?stockExchangeId")
+
     console.log(this.state.selectedStock);
     const allOrders = liveOrders;
     const orders = allOrders.filter(
@@ -417,6 +431,7 @@ class App extends Component {
                   orders={this.state.orders}
                   getAllOrderDetails={this.getAllOrderDetails}
                   retrieveOrderDetails={this.retrieveOrderDetails}
+                  handleCancelOrderClick={this.handleCancelOrderClick}
                 />
               )}
             />

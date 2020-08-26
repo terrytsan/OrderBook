@@ -7,11 +7,12 @@ class ManageOrder extends Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
-    const { id, time, price, quantity, side, party } = this.props.order;
+    const { handleCancelOrderClick } = this.props;
+    const { id, timestamp, price, quantity, side, party } = this.props.order;
     return (
       <div className="row m-2" id={id}>
         <div className="id col">{id}</div>
-        <div className="time col">{time}</div>
+        <div className="time col">{timestamp}</div>
         <div className="quantity col">{quantity}</div>
         <div className="price col">{price}</div>
         <div className="side col">{side}</div>
@@ -33,7 +34,8 @@ class ManageOrder extends Component {
           </button>
         </div>
         <div className="col">
-          <button className="btn btn-outline-danger btn-sm">
+          <button className="btn btn-outline-danger btn-sm"
+          onClick={() => handleCancelOrderClick(id)}>
             Cancel Order
           </button>
         </div>
