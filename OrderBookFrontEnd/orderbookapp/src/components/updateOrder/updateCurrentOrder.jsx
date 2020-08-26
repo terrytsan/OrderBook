@@ -42,9 +42,10 @@ class UpdatingCurrentOrder extends Component {
           <Form.Label>Quantity</Form.Label>
           <Form.Control
             type="number"
-            name="Quantity"
-            placeholder={order.quantity}
+            name="quantity"
+            value={order.quantity}
             onChange={handleChange}
+            min="0"
             required
           />
         </Form.Group>
@@ -52,8 +53,8 @@ class UpdatingCurrentOrder extends Component {
           <Form.Label>Price</Form.Label>
           <Form.Control
             type="number"
-            name="Price"
-            placeholder={order.price}
+            name="price"
+            value={order.price}
             onChange={handleChange}
             required
             min="0"

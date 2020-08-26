@@ -74,7 +74,9 @@ class App extends Component {
       },
     ],
     orders: [],
+    // Holds the data for updating an order
     currentOrderRecord: {
+      id:"",
       quantity: "",
       price: "",
       side: "BUY",
@@ -207,19 +209,30 @@ class App extends Component {
     let inputValue = event.target.value;
     let orderInfo = this.state.currentOrderRecord;
 
-    console.log(`Updating new contact data: ${inputName} : ${inputValue}`);
+    console.log(`Updating order data: ${inputName} : ${inputValue}`);
 
     if (orderInfo.hasOwnProperty(inputName)) {
       orderInfo[inputName] = inputValue;
-      this.setState({ newOrder: orderInfo });
+      this.setState({ currentOrderRecord: orderInfo });
     }
   };
 
   handleUpdateFormSubmit = (event) => {
-    console.log("Adding contact!");
+    console.log("Updating order");
     if (event) {
       event.preventDefault();
     }
+
+    // Combine the params to perform the updateOrder
+    let params = {
+      orderId: this.state.currentOrderRecord.id,
+      quantity: this.state.currentOrderRecord.quantity, price: this.state.currentOrderRecord.price
+    };
+
+    fetch(SERVICE_URL + 'updateOrder?' + new URLSearchParams(params), {
+      method: 'post'
+    }).then(response => response.text())
+
     //Will update in the backend
     let orders = this.state.orders;
     orders.push(this.state.currentOrderRecord);
