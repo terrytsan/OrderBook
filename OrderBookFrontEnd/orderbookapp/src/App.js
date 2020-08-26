@@ -75,6 +75,27 @@ let liveOrders = [
   },
 ];
 
+/*
+let allStocks = [
+  {
+    id: 1,
+    stockExchangeId: 1,
+    symbol: "GOOG.L",
+    name: "Google (London)",
+    maxQuantity: 100,
+    tickSize: 1,
+  },
+  {
+    id: 2,
+    stockExchangeId: 1,
+    symbol: "TSL",
+    name: "Tesla",
+    maxQuantity: 200,
+    tickSize: 10,
+  },
+];
+*/
+
 class App extends Component {
   state = {
     selectedStock: {
@@ -111,12 +132,29 @@ class App extends Component {
       partyId: "1",
       stockId: "1",
     },
+    retrievedOrderDetails: [
+      {
+        id: 3,
+        time: "5:01:00",
+        quantity: 1000,
+        price: "10.25",
+        side: "SELL",
+        party: { id: 2, symbol: "CP2", name: "Counter Party 2" },
+        stock: {
+          id: 2,
+          stockExchangeId: 1,
+          symbol: "TSL",
+          name: "Tesla",
+          maxQuantity: 200,
+          tickSize: 10,
+        },
+      },
+    ],
     trades: [],
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
     ],
     types: ["BUY", "SELL"],
-    toOrderDetails: false,
     newOrder: {
       quantity: "",
       price: "",
@@ -164,13 +202,26 @@ class App extends Component {
     }
   };
 
+  handleAddFormSubmit = (event) => {
+    console.log("Adding contact!");
+    if (event) {
+      event.preventDefault();
+    }
+    let orders = this.state.orders;
+    orders.push(this.state.newOrder);
+    this.setState({ orders }, () => {
+      console.log(orders);
+      this.splitorders(this.state.orders);
+    });
+  };
+
   handleUpdateFormChange = (event) => {
     // The event triggering this function should be an input's onChange event
     // We need to grab the input's name & value so we can associate it with the
     // newContactData within the App's state.
     let inputName = event.target.name;
     let inputValue = event.target.value;
-    let orderInfo = this.state.newOrder;
+    let orderInfo = this.state.currentOrderRecord;
 
     console.log(`Updating new contact data: ${inputName} : ${inputValue}`);
 
@@ -180,14 +231,18 @@ class App extends Component {
     }
   };
 
-  handleAddFormSubmit = (event) => {
+  handleUpdateFormSubmit = (event) => {
     console.log("Adding contact!");
     if (event) {
       event.preventDefault();
     }
+    //Will update in the backend
     let orders = this.state.orders;
-    orders.push(this.state.newOrder);
-    this.setState({ orders });
+    orders.push(this.state.currentOrderRecord);
+    this.setState({ orders }, () => {
+      console.log(orders);
+      this.splitorders(this.state.orders);
+    });
   };
 
   selectingStock = (stock) => {
@@ -199,6 +254,7 @@ class App extends Component {
     });
   };
 
+  //Will fetch the orders for a stock
   filterStockOrders = (selectedStock) => {
     console.log(this.state.selectedStock);
     const allOrders = liveOrders;
@@ -212,7 +268,7 @@ class App extends Component {
     });
   };
 
-  //Will fetch the stock
+  //Will fetch the trades
   filterStockTrades = (selectedStock) => {
     console.log(this.state.selectedStock);
     const allOrders = liveOrders;
@@ -226,7 +282,7 @@ class App extends Component {
     });
   };
 
-  /**This method is used to split the order based on the side */
+  //This method is used to split the order based on the side
   splitorders = (orders) => {
     const buyOrders = orders.filter((order) => order.side === "BUY");
     const sellOrders = orders.filter((order) => order.side === "SELL");
@@ -234,27 +290,24 @@ class App extends Component {
     this.setState({ sellOrders });
   };
 
+  //Used to get at orders details, for the order details page.
   getAllOrderDetails = (orderId) => {
     //INCLUDE FETCH FROM THE CONTROLLER
     //SET CURRENTORDERRECORD
     //IT TAKES A WHILE TO COMPLETE THE SET STATE FUNCTION - CHECK IT OUT!!!!!!!!!!!!!!!!!!!!!!
     this.retrieveOrderDetails(orderId);
 
-    /*
-    this.setState(() => ({ toOrderDetails: true }));
-    if (this.state.toOrderDetails === true) {
-      return <Redirect to="/orderDetails" />;
-    }
-    */
+    //Then this will retrieve all the data in the database using that order ID
+    //Allocating it to this.state.retrievedOrderDetails
   };
 
   // Used in orderManaged to update a certain record
   retrieveOrderDetails = (orderId) => {
     const OrderRecord = this.state.orders.find((order) => order.id === orderId);
-    this.setState({ currentOrderRecord: OrderRecord });
+    this.setState({ currentOrderRecord: OrderRecord }, () => {
+      console.log(this.state.currentOrderRecord);
+    });
   };
-
-  componentDidUpdate() {}
 
   render() {
     return (
@@ -308,8 +361,8 @@ class App extends Component {
               render={(props) => (
                 <OrderDetails
                   {...props}
-                  counterParties={this.state.counterParties}
-                  orderRecord={this.state.currentOrderRecord}
+                  order={this.state.currentOrderRecord}
+                  orderRecords={this.state.retrievedOrderDetails}
                 />
               )}
             />
@@ -318,9 +371,9 @@ class App extends Component {
               render={(props) => (
                 <UpdateOrder
                   {...props}
-                  counterParties={this.state.counterParties}
-                  stocks={this.state.stocks}
-                  currentOrderRecord={this.state.currentOrderRecord}
+                  order={this.state.currentOrderRecord}
+                  handleSubmit={this.handleUpdateFormSubmit}
+                  handleChange={this.handleUpdateFormChange}
                 />
               )}
             />
@@ -334,6 +387,7 @@ class App extends Component {
                   selectingStock={this.selectingStock}
                   orders={this.state.orders}
                   getAllOrderDetails={this.getAllOrderDetails}
+                  retrieveOrderDetails={this.retrieveOrderDetails}
                 />
               )}
             />
