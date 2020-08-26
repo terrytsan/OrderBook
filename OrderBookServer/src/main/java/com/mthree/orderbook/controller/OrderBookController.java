@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,18 +48,7 @@ public class OrderBookController {
 	 */
 	@GetMapping("/stocks")
 	public ResponseEntity<List<Stock>> getStocks(@RequestParam int stockExchangeId) {
-//		return new ResponseEntity<>(dataFetchService.getStocks(stockExchangeId), HttpStatus.OK);
-		
-		StockExchange testExchange = new StockExchange(1, "XLONG", "LCH");
-		Party testParty = new Party(1, "CP1", "Customer 1");
-		Stock testStock = new Stock(1, testExchange, "TSLA", 1000, new BigDecimal("0.01"));
-		
-		List<Stock> stocks = new ArrayList<Stock>() {{
-			add(new Stock(1, testExchange, "TSLA", 1000, new BigDecimal("0.01")));
-			add(new Stock(1, testExchange, "GOOGL", 1000, new BigDecimal("0.01")));
-			add(new Stock(1, testExchange, "AMZN", 1000, new BigDecimal("0.01")));
-		}};
-		return new ResponseEntity<>(stocks, HttpStatus.OK);
+		return new ResponseEntity<>(dataFetchService.getStocks(stockExchangeId), HttpStatus.OK);
 	}
 	
 	
@@ -73,33 +60,7 @@ public class OrderBookController {
 	 */
 	@GetMapping("/liveOrders")
 	public ResponseEntity<List<Order>> getLiveOrders(@RequestParam int stockId) {
-//		return new ResponseEntity<>(dataFetchService.getLiveOrders(stockId), HttpStatus.OK);
-		
-		
-		StockExchange testExchange = new StockExchange(1, "XLONG", "LCH");
-		Party testParty = new Party(1, "CP1", "Customer 1");
-		Stock testStock = new Stock(1, testExchange, "TSLA", 1000, new BigDecimal("0.01"));
-		
-		List<Order> orders = new ArrayList<Order>() {{
-			add(new Order(1, testStock, testParty, Side.BUY, 19, new BigDecimal("0.21"),
-			              LocalDateTime.now().minusMinutes(10), State.LIVE, 1));
-			add(new Order(2, testStock, testParty, Side.BUY, 41, new BigDecimal("0.19"),
-			              LocalDateTime.now().minusMinutes(12), State.LIVE, 1));
-			add(new Order(3, testStock, testParty, Side.BUY, 120, new BigDecimal("0.17"),
-			              LocalDateTime.now().minusMinutes(5), State.LIVE, 1));
-			add(new Order(4, testStock, testParty, Side.BUY, 120, new BigDecimal("0.17"), LocalDateTime.now(),
-			              State.LIVE, 1));
-			add(new Order(5, testStock, testParty, Side.SELL, 43, new BigDecimal("0.40"),
-			              LocalDateTime.now().minusMinutes(13), State.LIVE, 1));
-			add(new Order(6, testStock, testParty, Side.SELL, 21, new BigDecimal("0.36"),
-			              LocalDateTime.now().minusMinutes(8), State.LIVE, 1));
-			add(new Order(7, testStock, testParty, Side.SELL, 10, new BigDecimal("0.38"),
-			              LocalDateTime.now().minusMinutes(4), State.LIVE, 1));
-			add(new Order(8, testStock, testParty, Side.SELL, 10, new BigDecimal("0.41"), LocalDateTime.now(),
-			              State.LIVE, 1));
-		}};
-		return new ResponseEntity<>(orders, HttpStatus.OK);
-		
+		return new ResponseEntity<>(dataFetchService.getLiveOrders(stockId), HttpStatus.OK);
 	}
 	
 	/**
