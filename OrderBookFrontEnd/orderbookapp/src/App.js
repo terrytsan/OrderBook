@@ -81,7 +81,7 @@ class App extends Component {
       partyId: "1",
       stockId: "1",
     },
-    retrievedOrderDetails: [
+    orderHistory: [
       {
         id: 3,
         time: "5:01:00",
@@ -271,43 +271,28 @@ class App extends Component {
       .then((data) => this.setState({ stockTrades: data }))
       .then(console.log("These are all the stocks trades"))
       .then(console.log(this.state.stockTrades));
-
-    /*
-    console.log(this.state.selectedStock);
-    const allOrders = liveOrders;
-    const orders = allOrders.filter(
-      (order) => order.stock.id === selectedStock.id
-    );
-    console.log(orders);
-    this.setState({ orders }, () => {
-      console.log(orders);
-      this.splitorders(this.state.orders);
-    });
-    */
   };
 
-  //Will fetch the trades for a particular stock used in orderbook and historical data page
-  filterStockTrades = (selectedStock) => {
-    // Gets all the trades for the stock exchange
-    console.log(selectedStock);
-    fetch(SERVICE_URL + "tradesForStock?stockId=" + selectedStock.id)
+  //Will fetch the trades for a particular order used in order details
+  filterOrderTrades = (orderId) => {
+    // Gets all the trades for a particular order
+    console.log(orderId);
+    fetch(SERVICE_URL + "getTradesForOrder?orderId=" + orderId)
       .then((data) => data.json())
-      .then((data) => this.setState({ stockTrades: data }))
-      .then(console.log("These are all the stocks trades"))
-      .then(console.log(this.state.stockTrades));
+      .then((data) => this.setState({ orderTrades: data }))
+      .then(console.log("These are all the orders trades"))
+      .then(console.log(this.state.orderTrades));
+  };
 
-    /*
-    console.log(this.state.selectedStock);
-    const allOrders = liveOrders;
-    const orders = allOrders.filter(
-      (order) => order.stock.id === selectedStock.id
-    );
-    console.log(orders);
-    this.setState({ orders }, () => {
-      console.log(orders);
-      this.splitorders(this.state.orders);
-    });
-    */
+  //Will fetch the order history of a particular order used in order details
+  filterOrderHistory = (orderId) => {
+    // Gets all the order histor for a particular order
+    console.log(orderId);
+    fetch(SERVICE_URL + "getOrderHistory?orderId=" + orderId)
+      .then((data) => data.json())
+      .then((data) => this.setState({ orderHistory: data }))
+      .then(console.log("These are all the orders, order history"))
+      .then(console.log(this.state.orderHistory));
   };
 
   //This method is used to split the order based on the side
@@ -324,9 +309,10 @@ class App extends Component {
     //SET CURRENTORDERRECORD
     //IT TAKES A WHILE TO COMPLETE THE SET STATE FUNCTION - CHECK IT OUT!!!!!!!!!!!!!!!!!!!!!!
     this.retrieveOrderDetails(orderId);
-
+    this.filterOrderTrades(orderId);
+    this.filterOrderHistory(orderId);
     //Then this will retrieve all the data in the database using that order ID
-    //Allocating it to this.state.retrievedOrderDetails
+    //Allocating it to this.state.orderHistory
   };
 
   // Used in orderManaged to update a certain record
@@ -393,7 +379,7 @@ class App extends Component {
                 <OrderDetails
                   {...props}
                   order={this.state.currentOrderRecord}
-                  orderRecords={this.state.retrievedOrderDetails}
+                  orderRecords={this.state.orderHistory}
                   trades={this.state.orderTrades}
                 />
               )}
