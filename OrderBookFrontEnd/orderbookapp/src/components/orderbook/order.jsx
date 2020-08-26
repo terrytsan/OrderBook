@@ -5,12 +5,31 @@ class Order extends Component {
     const { id, time, price, quantity } = this.props.order;
     return (
       <div className="row" id={id}>
-        <div className="time col">{time}</div>
+        <div className="col">
+          {this.checkSideColumn1(this.props.type, time, price)}
+        </div>
         <div className="shares col">{quantity}</div>
-        <div className="price col">{price}</div>
+        <div className="price col">
+          {this.checkSideColumn3(this.props.type, time, price)}
+        </div>
       </div>
     );
   }
+  checkSideColumn1 = (type, time, price) => {
+    if (type === "BID") {
+      return time;
+    } else {
+      return price;
+    }
+  };
+
+  checkSideColumn3 = (type, time, price) => {
+    if (type === "BID") {
+      return price;
+    } else {
+      return time;
+    }
+  };
 }
 
 export default Order;

@@ -5,24 +5,17 @@ import Orders from "./../components/orderbook/orders.jsx";
 import StockAndTrade from "./../components/stockAndTrade";
 
 class OrderBook extends Component {
-  state = {
-    buyOrders: [],
-    sellOrders: [],
-  };
-
-  splitorders = (orders) => {
-    const buyOrders = orders.filter((order) => order.side === "BUY");
-    const sellOrders = orders.filter((order) => order.side === "SELL");
-    this.setState({ buyOrders });
-    this.setState({ sellOrders });
-  };
-
-  componentDidMount() {
-    this.splitorders(this.props.orders);
-  }
+  state = {};
 
   render() {
-    const { selectedStock, stocks, selectingStock, trades } = this.props;
+    const {
+      selectedStock,
+      stocks,
+      selectingStock,
+      trades,
+      buyOrders,
+      sellOrders,
+    } = this.props;
     return (
       <div>
         <h1>Order Book (Main)</h1>
@@ -36,10 +29,10 @@ class OrderBook extends Component {
         </div>
         <div className="AskBidTable row container-fluid border">
           <div className="col container border m-2">
-            <Orders orders={this.state.buyOrders} type="BID" />
+            <Orders orders={buyOrders} type="BID" />
           </div>
           <div className="col container border m-2">
-            <Orders orders={this.state.sellOrders} type="ASK" />
+            <Orders orders={sellOrders} type="ASK" />
           </div>
         </div>
       </div>

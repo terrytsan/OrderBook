@@ -118,6 +118,8 @@ class App extends Component {
       partyId: "1",
       stockId: "1",
     },
+    buyOrders: [],
+    sellOrders: [],
   };
 
   componentDidMount() {
@@ -135,12 +137,11 @@ class App extends Component {
   updatePartiesList = () => {
     fetch(SERVICE_URL + "parties")
       .then((data) => data.json())
-      .then((data) => console.log(data))
-      .then(console.log(this.state.counterParties))
+      .then((data) => this.setState({ counterParties: data }))
       .catch((err) => console.log("fail: " + err));
+    //)
   };
 
-  //this.setState({ counterParties: data })
   handleAddFormChange = (event) => {
     // The event triggering this function should be an input's onChange event
     // We need to grab the input's name & value so we can associate it with the
@@ -173,10 +174,6 @@ class App extends Component {
     }
   };
 
-  shouldComponentUpdate() {
-    return false; // Will cause component to never re-render.
-  }
-
   handleAddFormSubmit = (event) => {
     console.log("Adding contact!");
     if (event) {
@@ -185,34 +182,6 @@ class App extends Component {
     let orders = this.state.orders;
     orders.push(this.state.newOrder);
     this.setState({ orders });
-
-    /* THIS WILL LINK TO THE BACK-END!!!!
-    fetch(SERVICE_URL + "/contact/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(this.state.newContactData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Add Contact - Success:", data);
-        this.setState({
-          newContactData: {
-            firstName: "",
-            lastName: "",
-            company: "",
-            phone: "",
-            email: "",
-          },
-        });
-        this.loadContactData();
-      })
-      .catch((error) => {
-        console.log("Add Contact - Error:");
-        console.log(error);
-      });
-      */
   };
 
   selectingStock = (stock) => {
@@ -220,6 +189,7 @@ class App extends Component {
     this.setState({ selectedStock }, () => {
       console.log(this.state.selectedStock);
       this.filterStockOrders(selectedStock);
+      this.filterStockTrades(selectedStock);
     });
   };
 
@@ -232,7 +202,30 @@ class App extends Component {
     console.log(orders);
     this.setState({ orders }, () => {
       console.log(orders);
+      this.splitorders(this.state.orders);
     });
+  };
+
+  //Will fetch the stock
+  filterStockTrades = (selectedStock) => {
+    console.log(this.state.selectedStock);
+    const allOrders = liveOrders;
+    const orders = allOrders.filter(
+      (order) => order.stock.id === selectedStock.id
+    );
+    console.log(orders);
+    this.setState({ orders }, () => {
+      console.log(orders);
+      this.splitorders(this.state.orders);
+    });
+  };
+
+  /**This method is used to split the order based on the side */
+  splitorders = (orders) => {
+    const buyOrders = orders.filter((order) => order.side === "BUY");
+    const sellOrders = orders.filter((order) => order.side === "SELL");
+    this.setState({ buyOrders });
+    this.setState({ sellOrders });
   };
 
   getAllOrderDetails = (orderId) => {
@@ -266,12 +259,14 @@ class App extends Component {
               path="/"
               render={(props) => (
                 <OrderBook
+                  {...props}
                   selectedStock={this.state.selectedStock}
                   stocks={this.state.stocks}
                   selectingStock={this.selectingStock}
                   trades={this.state.trades}
                   orders={this.state.orders}
-                  {...props}
+                  buyOrders={this.state.buyOrders}
+                  sellOrders={this.state.sellOrders}
                 />
               )}
               exact
