@@ -14,19 +14,18 @@ class UpdateOrder extends Component {
   };
 
   componentDidMount() {
-    this.setState({ order: this.props.location.aboutOrder.order });
+    this.setState({ order: this.props.order });
   }
 
   render() {
-    const { order } = this.props.location.aboutOrder;
-    const { counterParties, stocks } = this.props;
+    const { order, handleSubmit, handleChange } = this.props;
     return (
       <div>
         <h1>Update Order</h1>
         <UpdatingCurrentOrder
           order={order}
-          counterParties={counterParties}
-          stocks={stocks}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
         />
       </div>
     );
