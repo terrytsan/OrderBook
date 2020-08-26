@@ -1,29 +1,29 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 class UpdatingCurrentOrder extends Component {
-  state = {};
+  state = { redirect: null };
 
-  getOrderParty = () => {
-    const orderParty = this.props.order.party;
-    const partyDisplay = orderParty.name + " (" + orderParty.symbol + ")";
-    return partyDisplay;
-  };
-
-  getOrderStock = () => {
-    const orderStock = this.props.order.stock;
-    const stockDisplay = orderStock.name + " (" + orderStock.symbol + ")";
-    return stockDisplay;
+  submittedOrderUpdate = () => {
+    this.props.handleSubmit();
+    this.setState({ redirect: "/manageOrders" });
   };
 
   render() {
-    let { order, handleChange, handleSubmit } = this.props;
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
+    let { order, handleChange } = this.props;
     return (
-      <Form className="container border" onSubmit={handleSubmit}>
+      <Form
+        className="container border"
+        onSubmit={() => this.submittedOrderUpdate()}
+      >
         <Form.Group controlId="orderParty">
           <Form.Label>Party</Form.Label>
           <output type="text" className="form-control" id="orderParty">
-            {this.getOrderParty()}
+            {order.party.symbol}, ({order.party.name})
           </output>
         </Form.Group>
         <Form.Group controlId="orderSide">
@@ -35,7 +35,7 @@ class UpdatingCurrentOrder extends Component {
         <Form.Group controlId="orderStock">
           <Form.Label>Stock</Form.Label>
           <output type="text" className="form-control" id="orderParty">
-            {this.getOrderStock()}
+            {order.stock.symbol}, ({order.stock.name})
           </output>
         </Form.Group>
         <Form.Group controlId="orderQuantity">
