@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -67,8 +67,8 @@ class OrderDaoImplTest {
         order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
         Order result = orderDao.getOrderById(order.getId());
-
-        assertEquals(order, result);
+    
+        assertEquals(order.getTimestamp().withNano(0), result.getTimestamp().withNano(0));
     }
 
     @Test
@@ -114,7 +114,7 @@ class OrderDaoImplTest {
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getLiveOrders(stock.getId());
-        assertEquals(order, orders.get(0));
+        assertEquals(order.getTimestamp().withNano(0), orders.get(0).getTimestamp().withNano(0));
         assertEquals(1, orders.size());
     }
 
@@ -161,7 +161,7 @@ class OrderDaoImplTest {
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getLiveBuyOrders(stock.getId());
-        assertEquals(order, orders.get(0));
+        assertEquals(order.getTimestamp().withNano(0), orders.get(0).getTimestamp().withNano(0));
         assertEquals(1, orders.size());
     }
 
@@ -208,7 +208,7 @@ class OrderDaoImplTest {
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getLiveSellOrders(stock.getId());
-        assertEquals(order2, orders.get(0));
+        assertEquals(order2.getTimestamp().withNano(0), orders.get(0).getTimestamp().withNano(0));
         assertEquals(1, orders.size());
     }
 
@@ -253,10 +253,10 @@ class OrderDaoImplTest {
         order2.setVersion(1);
         order2.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order2);
-
+    
         List<Order> orders = orderDao.getOrdersForStock(stock.getId());
-        assertEquals(order, orders.get(0));
-        assertEquals(order2, orders.get(1));
+        assertEquals(order.getTimestamp().withNano(0), orders.get(0).getTimestamp().withNano(0));
+        assertEquals(order2.getTimestamp().withNano(0), orders.get(1).getTimestamp().withNano(0));
     }
 
     @Test
@@ -295,6 +295,6 @@ class OrderDaoImplTest {
         orderDao.updateOrder(order);
 
         List<Order> orderHistory = orderDao.getOrderHistoryWithOrderId(order.getId());
-        assertEquals(order, orderHistory.get(1));
+        assertEquals(order.getTimestamp().withNano(0), orderHistory.get(1).getTimestamp().withNano(0));
     }
 }

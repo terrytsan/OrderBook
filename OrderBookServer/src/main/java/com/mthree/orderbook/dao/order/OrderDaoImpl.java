@@ -13,12 +13,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -178,8 +175,8 @@ public class OrderDaoImpl implements OrderDao {
             order.setPrice(rs.getBigDecimal("price"));
             order.setState(State.valueOf(rs.getString("state")));
             order.setVersion(rs.getInt("version"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnn");
-            order.setTimestamp(LocalDateTime.parse(rs.getString("timestamp"), formatter));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+            order.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
             return order;
         }
     }

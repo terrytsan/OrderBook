@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -87,7 +87,7 @@ class TradeDaoImplTest {
         order.setParty(party);
         order.setSide(Side.BUY);
         order.setQuantity(30);
-        order.setPrice(new BigDecimal("300"));
+        order.setPrice(new BigDecimal("300.00"));
         order.setState(State.LIVE);
         order.setVersion(1);
         order.setTimestamp(LocalDateTime.now().withNano(0));
@@ -98,7 +98,7 @@ class TradeDaoImplTest {
         order2.setParty(party);
         order2.setSide(Side.SELL);
         order2.setQuantity(30);
-        order2.setPrice(new BigDecimal("300"));
+        order2.setPrice(new BigDecimal("300.00"));
         order2.setState(State.LIVE);
         order2.setVersion(1);
         order2.setTimestamp(LocalDateTime.now().withNano(0));
@@ -150,7 +150,7 @@ class TradeDaoImplTest {
         order.setParty(party);
         order.setSide(Side.BUY);
         order.setQuantity(30);
-        order.setPrice(new BigDecimal("300"));
+        order.setPrice(new BigDecimal("300.00"));
         order.setState(State.LIVE);
         order.setVersion(1);
         order.setTimestamp(LocalDateTime.now().withNano(0));
@@ -161,7 +161,7 @@ class TradeDaoImplTest {
         order2.setParty(party);
         order2.setSide(Side.SELL);
         order2.setQuantity(30);
-        order2.setPrice(new BigDecimal("300"));
+        order2.setPrice(new BigDecimal("300.00"));
         order2.setState(State.LIVE);
         order2.setVersion(1);
         order2.setTimestamp(LocalDateTime.now().withNano(0));
@@ -214,7 +214,7 @@ class TradeDaoImplTest {
         order.setParty(party);
         order.setSide(Side.BUY);
         order.setQuantity(30);
-        order.setPrice(new BigDecimal("300"));
+        order.setPrice(new BigDecimal("300.00"));
         order.setState(State.LIVE);
         order.setVersion(1);
         order.setTimestamp(LocalDateTime.now().withNano(0));
@@ -225,7 +225,7 @@ class TradeDaoImplTest {
         order2.setParty(party);
         order2.setSide(Side.SELL);
         order2.setQuantity(30);
-        order2.setPrice(new BigDecimal("300"));
+        order2.setPrice(new BigDecimal("300.00"));
         order2.setState(State.LIVE);
         order2.setVersion(1);
         order2.setTimestamp(LocalDateTime.now().withNano(0));
