@@ -24,7 +24,7 @@ class NewOrder extends Component {
           <Form.Label>Party</Form.Label>
           <Form.Control
             as="select"
-            name="Party"
+            name="partyId"
             onChange={handleChange}
             defaultValue={newOrder.partyId}
           >
@@ -39,7 +39,7 @@ class NewOrder extends Component {
           <Form.Label>Type Of Order (Buy/Sell)</Form.Label>
           <Form.Control
             as="select"
-            name="Side"
+            name="side"
             onChange={handleChange}
             defaultValue={newOrder.side}
           >
@@ -54,7 +54,7 @@ class NewOrder extends Component {
           <Form.Label>Stock</Form.Label>
           <Form.Control
             as="select"
-            name="Stock"
+            name="stockId"
             onChange={handleChange}
             defaultValue={newOrder.stockId}
           >
@@ -69,7 +69,7 @@ class NewOrder extends Component {
           <Form.Label>Quantity</Form.Label>
           <Form.Control
             type="number"
-            name="Quantity"
+            name="quantity"
             placeholder="Enter number of shares"
             onChange={handleChange}
             required
@@ -79,7 +79,7 @@ class NewOrder extends Component {
           <Form.Label>Price</Form.Label>
           <Form.Control
             type="number"
-            name="Price"
+            name="price"
             placeholder="Enter number of shares"
             onChange={handleChange}
             required

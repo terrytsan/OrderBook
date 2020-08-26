@@ -9,6 +9,7 @@ class Stock extends Component {
   };
 
   getListOfStocks = (allStocks) => {
+    console.log("getListOfStocks called");
     let Stocks = [];
     allStocks.map((stock) => Stocks.push(stock.symbol));
     this.setState({ Stocks });
@@ -22,15 +23,19 @@ class Stock extends Component {
     const chosenStock = this.props.stocks.find(
       (stock) => stock.symbol === value
     );
+    // Return a stock object representing the selected stock from the select
     this.props.selectingStock(chosenStock);
   };
 
   componentDidMount() {
-    this.getListOfStocks(this.props.stocks);
+    // this.getListOfStocks(this.props.stocks);
   }
 
   render() {
-    const { selectedStock } = this.props;
+    const { selectedStock, stocks } = this.props;
+    console.log("The selectedStock is: " + selectedStock.id);
+    let stocksList = [];
+    stocks.map((stock) => stocksList.push(stock.symbol));
     return (
       <React.Fragment>
         <div className="col">
@@ -38,9 +43,9 @@ class Stock extends Component {
           <Select
             title={"Stock:"}
             name={"chosenStock"}
-            value={selectedStock.id}
+            value={selectedStock.symbol}
             placeholder={"Select Stock..."}
-            options={this.state.Stocks}
+            options={stocksList}
             onChange={this.handleChange}
           />
         </div>

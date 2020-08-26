@@ -132,7 +132,7 @@ class App extends Component {
       partyId: "1",
       stockId: "1",
     },
-    currentOrderHistory: [
+    retrievedOrderDetails: [
       {
         id: 3,
         time: "5:01:00",
@@ -150,7 +150,6 @@ class App extends Component {
         },
       },
     ],
-    currentOrderTrades: [],
     trades: [],
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
@@ -169,6 +168,22 @@ class App extends Component {
 
   componentDidMount() {
     this.updatePartiesList();
+    this.updateStocksList();
+  }
+
+  // Gets a list of stocks from the endpoint - using the "global" stockExchange object
+  updateStocksList = () => {
+    fetch(SERVICE_URL + "stocks?stockExchangeId=" + stockExchange.id)
+        .then((data) => data.json())
+        .then((data) => {
+          this.setState({stocks: data});
+          // set the first stock to the the default selected one
+          this.setState({selectedStock: data[0]})
+          console.log("received: " + data);
+          console.log("stocks state is now:" + this.state.stocks);
+        })
+        // .then(console.log(this.state.stocks))
+        .catch((err) => console.log("fail: " + err));
   }
 
   updateStockExchangeList = () => {
@@ -195,7 +210,7 @@ class App extends Component {
     let inputValue = event.target.value;
     let orderInfo = this.state.newOrder;
 
-    console.log(`Updating new contact data: ${inputName} : ${inputValue}`);
+    console.log(`Updating new order data: ${inputName} : ${inputValue}`);
 
     if (orderInfo.hasOwnProperty(inputName)) {
       orderInfo[inputName] = inputValue;
@@ -204,10 +219,22 @@ class App extends Component {
   };
 
   handleAddFormSubmit = (event) => {
-    console.log("Adding contact!");
+    console.log("Adding new order!");
+
     if (event) {
       event.preventDefault();
     }
+
+    // Combine the params to perform the addOrder
+    let params = {
+      partyId: this.state.newOrder.partyId, side: this.state.newOrder.side, stockId: this.state.newOrder.stockId,
+      quantity: this.state.newOrder.quantity, price: this.state.newOrder.price
+    };
+
+    fetch(SERVICE_URL + 'addOrder?' + new URLSearchParams(params), {
+      method: 'post'
+    }).then(response => response.text())
+
     let orders = this.state.orders;
     orders.push(this.state.newOrder);
     this.setState({ orders }, () => {
@@ -248,8 +275,8 @@ class App extends Component {
 
   selectingStock = (stock) => {
     const selectedStock = stock;
-    this.setState({ selectedStock }, () => {
-      console.log(this.state.selectedStock);
+    this.setState({ selectedStock: stock }, () => {
+      console.log(this.state.selectedStock+ "has been selected");
       this.filterStockOrders(selectedStock);
       this.filterStockTrades(selectedStock);
     });
@@ -297,8 +324,7 @@ class App extends Component {
     //SET CURRENTORDERRECORD
     //IT TAKES A WHILE TO COMPLETE THE SET STATE FUNCTION - CHECK IT OUT!!!!!!!!!!!!!!!!!!!!!!
     this.retrieveOrderDetails(orderId);
-    this.getAllOrderHistory(orderId);
-    this.getAllOrderTrades(orderId);
+
     //Then this will retrieve all the data in the database using that order ID
     //Allocating it to this.state.retrievedOrderDetails
   };
@@ -309,18 +335,6 @@ class App extends Component {
     this.setState({ currentOrderRecord: OrderRecord }, () => {
       console.log(this.state.currentOrderRecord);
     });
-  };
-
-  //This method is used to get all the orders history
-  getAllOrderHistory = (orderID) => {
-    //INCLUDE FETCH METHOD HERE
-    //sets to the state =======>>>>>>> currentOrderHistory
-  };
-
-  //This method is used to get all the trades for an order
-  getAllOrderTrades = (orderID) => {
-    //INCLUDE FETCH METHOD HERE
-    //sets to the state =======>>>>>>> currentOrderTrades
   };
 
   render() {
@@ -376,8 +390,7 @@ class App extends Component {
                 <OrderDetails
                   {...props}
                   order={this.state.currentOrderRecord}
-                  orderRecords={this.state.currentOrderHistory}
-                  allOrderTrades={this.state.currentOrderTrades}
+                  orderRecords={this.state.retrievedOrderDetails}
                 />
               )}
             />
