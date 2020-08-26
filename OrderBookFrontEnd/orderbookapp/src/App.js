@@ -15,6 +15,15 @@ import Help from "./pages/help.jsx";
 import UpdateOrder from "./pages/updateOrder.jsx";
 import OrderDetails from "./pages/orderDetails.jsx";
 
+const SERVICE_URL =
+  "http://startpage-env.eba-2npqnjuc.eu-west-2.elasticbeanstalk.com/";
+
+let stockExchange = {
+  id: 1,
+  name: "LSE",
+  centralCounterParty: "LCH",
+};
+
 class App extends Component {
   state = {
     selectedStock: {
@@ -80,8 +89,7 @@ class App extends Component {
     currentOrderRecord: {},
     trades: [],
     counterParties: [
-      { id: 1, symbol: "CP1", name: "Counter Party 1" },
-      { id: 2, symbol: "CP2", name: "Counter Party 2" },
+      { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
     ],
     types: ["BUY", "SELL"],
     toOrderDetails: false,
@@ -94,6 +102,27 @@ class App extends Component {
     },
   };
 
+  componentDidMount() {
+    this.updatePartiesList();
+  }
+
+  updateStockExchangeList = () => {
+    fetch(SERVICE_URL + "stockExchanges")
+      .then((data) => data.json())
+      .then((data) => console.log(data))
+      .then(console.log(this.state.counterParties))
+      .catch((err) => console.log("fail: " + err));
+  };
+
+  updatePartiesList = () => {
+    fetch(SERVICE_URL + "parties")
+      .then((data) => data.json())
+      .then((data) => console.log(data))
+      .then(console.log(this.state.counterParties))
+      .catch((err) => console.log("fail: " + err));
+  };
+
+  //this.setState({ counterParties: data })
   handleAddFormChange = (event) => {
     // The event triggering this function should be an input's onChange event
     // We need to grab the input's name & value so we can associate it with the
@@ -125,6 +154,10 @@ class App extends Component {
       this.setState({ newOrder: orderInfo });
     }
   };
+
+  shouldComponentUpdate() {
+    return false; // Will cause component to never re-render.
+  }
 
   handleAddFormSubmit = (event) => {
     console.log("Adding contact!");
@@ -213,7 +246,11 @@ class App extends Component {
             <Route
               path="/pastTrades"
               render={(props) => (
-                <HistoricalData {...props} trades={this.state.trades} />
+                <HistoricalData
+                  {...props}
+                  trades={this.state.trades}
+                  stockExchange={stockExchange}
+                />
               )}
             />
             <Route
