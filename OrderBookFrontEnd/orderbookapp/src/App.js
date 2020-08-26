@@ -199,7 +199,9 @@ class App extends Component {
 
   selectingStock = (stock) => {
     const selectedStock = stock;
-    this.setState({ selectedStock });
+    this.setState({ selectedStock }, () => {
+      console.log(this.state.selectedStock);
+    });
   };
 
   getAllOrderDetails = (orderId) => {
