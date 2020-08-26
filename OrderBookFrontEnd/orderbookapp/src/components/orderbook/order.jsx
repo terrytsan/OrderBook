@@ -2,15 +2,15 @@ import React, { Component } from "react";
 
 class Order extends Component {
   render() {
-    const { id, time, price, quantity } = this.props.order;
+    const { id, timestamp, price, quantity } = this.props.order;
     return (
       <div className="row" id={id}>
         <div className="col">
-          {this.checkSideColumn1(this.props.type, time, price)}
+          {this.checkSideColumn1(this.props.type, timestamp, "£" + price)}
         </div>
         <div className="shares col">{quantity}</div>
         <div className="price col">
-          {this.checkSideColumn3(this.props.type, time, price)}
+          {this.checkSideColumn3(this.props.type, timestamp, "£" + price)}
         </div>
       </div>
     );

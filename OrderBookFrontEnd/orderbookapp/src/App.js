@@ -178,7 +178,10 @@ class App extends Component {
         .then((data) => {
           this.setState({stocks: data});
           // set the first stock to the the default selected one
-          this.setState({selectedStock: data[0]})
+          this.setState({selectedStock: data[0]} , () => {
+            // fetch the list of orders related to the first stock
+            this.filterStockOrders(data[0]);
+          })
           console.log("received: " + data);
           console.log("stocks state is now:" + this.state.stocks);
         })
@@ -273,6 +276,7 @@ class App extends Component {
     });
   };
 
+  // Called when the stock combo-box is changed
   selectingStock = (stock) => {
     const selectedStock = stock;
     this.setState({ selectedStock: stock }, () => {
@@ -284,16 +288,13 @@ class App extends Component {
 
   //Will fetch the orders for a stock
   filterStockOrders = (selectedStock) => {
-    console.log(this.state.selectedStock);
-    const allOrders = liveOrders;
-    const orders = allOrders.filter(
-      (order) => order.stock.id === selectedStock.id
-    );
-    console.log(orders);
-    this.setState({ orders }, () => {
-      console.log(orders);
-      this.splitorders(this.state.orders);
-    });
+    fetch(SERVICE_URL + "liveOrders?stockId=" + selectedStock.id)
+        .then(data => data.json())
+        .then(data => {
+          this.setState({orders: data}, () => {
+            this.splitorders(this.state.orders);
+          });
+        });
   };
 
   //Will fetch the trades
