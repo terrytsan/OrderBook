@@ -1,19 +1,25 @@
 package com.mthree.orderbook.controller;
 
-import com.mthree.orderbook.entity.Stock;
-import com.mthree.orderbook.entity.StockExchange;
+import com.mthree.orderbook.entity.*;
+import com.mthree.orderbook.service.DataFetchService;
+import com.mthree.orderbook.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class OrderBookController {
+	
+	@Autowired
+	DataFetchService dataFetchService;
+	
+	@Autowired
+	OrderService orderService;
 	
 	/**
 	 * Root page for Order book web service.
@@ -32,7 +38,7 @@ public class OrderBookController {
 	 */
 	@GetMapping("/stockExchanges")
 	public ResponseEntity<List<StockExchange>> getStockExchanges() {
-		return null;
+		return new ResponseEntity<>(dataFetchService.getStockExchanges(), HttpStatus.OK);
 	}
 	
 	/**
@@ -42,7 +48,132 @@ public class OrderBookController {
 	 */
 	@GetMapping("/stocks")
 	public ResponseEntity<List<Stock>> getStocks(@RequestParam int stockExchangeId) {
-		return null;
+		return new ResponseEntity<>(dataFetchService.getStocks(stockExchangeId), HttpStatus.OK);
+	}
+	
+	
+	/**
+	 * Returns a list of live orders for a particular stock.
+	 *
+	 * @param stockId int representing id of the stock
+	 * @return a list of live Orders for the specified stock
+	 */
+	@GetMapping("/liveOrders")
+	public ResponseEntity<List<Order>> getLiveOrders(@RequestParam int stockId) {
+		return new ResponseEntity<>(dataFetchService.getLiveOrders(stockId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns the desired number of trades in the specified stock exchange.
+	 *
+	 * @param stockExchangeId int representing the id of the stock exchange
+	 * @param number          int representing the desired number of trades to fetch
+	 * @return a list consisting of {@code number} Trades
+	 */
+	@GetMapping("/trades")
+	public ResponseEntity<List<Trade>> getTrades(@RequestParam int stockExchangeId, @RequestParam int number) {
+		return new ResponseEntity<>(dataFetchService.getTrades(stockExchangeId, number), HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns a list of past trades for a particular stock.
+	 *
+	 * @param stockId int representing the id of the stock
+	 * @return a list of Trades for the specified stock
+	 */
+	@GetMapping("/tradesForStock")
+	public ResponseEntity<List<Trade>> getTradesForStock(@RequestParam int stockId) {
+		return new ResponseEntity<>(dataFetchService.getTradesForStock(stockId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns a list of orders for a particular stock.
+	 *
+	 * @param stockId int representing the id of the stock
+	 * @return a list of Orders for the specified stock
+	 */
+	@GetMapping("/ordersForStock")
+	public ResponseEntity<List<Order>> getOrdersForStock(@RequestParam int stockId) {
+		return new ResponseEntity<>(dataFetchService.getOrdersForStock(stockId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Update the state of the specified order to cancelled.
+	 *
+	 * @param orderId int representing the id of the order to cancel
+	 * @return a NO_CONTENT (204) code upon success.
+	 */
+	@PostMapping("/cancelOrder")
+	public ResponseEntity<?> cancelOrder(@RequestParam int orderId) {
+		orderService.cancelOrder(orderId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	/**
+	 * Increases the price of the specified order by amount specified by order's Stock.
+	 *
+	 * @param orderId int representing order id of the order to tick up
+	 * @return a NO_CONTENT (204) code upon success.
+	 */
+	@PostMapping("/tickUpOrder")
+	public ResponseEntity<?> tickUpOrder(@RequestParam int orderId) {
+		orderService.tickUpOrder(orderId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	/**
+	 * Decreases the price of the specified order by amount specified by order's Stock.
+	 *
+	 * @param orderId int representing order id of the order to tick down
+	 * @return a NO_CONTENT (204) code upon success.
+	 */
+	@PostMapping("/tickDownOrder")
+	public ResponseEntity<?> tickDownOrder(@RequestParam int orderId) {
+		orderService.tickDownOrder(orderId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	/**
+	 * Returns the order with the specified id.
+	 *
+	 * @param orderId int representing the id of the desired order
+	 * @return an Order with the specified id
+	 */
+	@GetMapping("/getOrder")
+	public ResponseEntity<Order> getOrderWithId(@RequestParam int orderId) {
+		return new ResponseEntity<>(dataFetchService.getOrderWithId(orderId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns the history of a particular order. List will contain orders with the same id, but different versions.
+	 *
+	 * @param orderId int representing the id of the order to retrieve history for
+	 * @return a list of Orders representing the history of the specified order
+	 */
+	@GetMapping("/getOrderHistory")
+	public ResponseEntity<List<Order>> getOrderHistoryWithOrderId(@RequestParam int orderId) {
+		return new ResponseEntity<>(dataFetchService.getOrderHistoryWithOrderId(orderId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns a list of trades involving a particular order (an order might be involved in multiple trades).
+	 *
+	 * @param orderId int representing the id of the order
+	 * @return a list of Trades involving a particular order
+	 */
+	@GetMapping("/getTradesForOrder")
+	public ResponseEntity<List<Trade>> getTradesWithOrderId(@RequestParam int orderId) {
+		return new ResponseEntity<>(dataFetchService.getTradesWithOrderId(orderId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Returns a list of all parties.
+	 *
+	 * @return list of Party
+	 */
+	@GetMapping("/parties")
+	public ResponseEntity<List<Party>> getAllParties() {
+		return new ResponseEntity<>(dataFetchService.getAllParties(), HttpStatus.OK);
 	}
 	
 	/**
@@ -55,8 +186,16 @@ public class OrderBookController {
 	 * @return ResponseEntity with the relevant response code and empty body
 	 */
 	@PostMapping("/addOrder")
-	public ResponseEntity<?> addOrder(@RequestParam int partyId, @RequestParam int stockId,
+	public ResponseEntity<?> addOrder(@RequestParam int partyId, @RequestParam String side, @RequestParam int stockId,
 	                                  @RequestParam int quantity, @RequestParam BigDecimal price) {
-		return null;
+		orderService.createOrder(stockId, partyId, side, quantity, price);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@PostMapping("/updateOrder")
+	public ResponseEntity<?> updateOrder(@RequestParam int orderId, @RequestParam int quantity,
+	                                     @RequestParam BigDecimal price) {
+		orderService.updateOrder(orderId, quantity, price);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
