@@ -150,7 +150,8 @@ class App extends Component {
         },
       },
     ],
-    trades: [],
+    stockTrades: [],
+    orderTrades: [],
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
     ],
@@ -174,20 +175,20 @@ class App extends Component {
   // Gets a list of stocks from the endpoint - using the "global" stockExchange object
   updateStocksList = () => {
     fetch(SERVICE_URL + "stocks?stockExchangeId=" + stockExchange.id)
-        .then((data) => data.json())
-        .then((data) => {
-          this.setState({stocks: data});
-          // set the first stock to the the default selected one
-          this.setState({selectedStock: data[0]} , () => {
-            // fetch the list of orders related to the first stock
-            this.filterStockOrders(data[0]);
-          })
-          console.log("received: " + data);
-          console.log("stocks state is now:" + this.state.stocks);
-        })
-        // .then(console.log(this.state.stocks))
-        .catch((err) => console.log("fail: " + err));
-  }
+      .then((data) => data.json())
+      .then((data) => {
+        this.setState({ stocks: data });
+        // set the first stock to the the default selected one
+        this.setState({ selectedStock: data[0] }, () => {
+          // fetch the list of orders related to the first stock
+          this.filterStockOrders(data[0]);
+        });
+        console.log("received: " + data);
+        console.log("stocks state is now:" + this.state.stocks);
+      })
+      // .then(console.log(this.state.stocks))
+      .catch((err) => console.log("fail: " + err));
+  };
 
   updateStockExchangeList = () => {
     fetch(SERVICE_URL + "stockExchanges")
@@ -230,13 +231,16 @@ class App extends Component {
 
     // Combine the params to perform the addOrder
     let params = {
-      partyId: this.state.newOrder.partyId, side: this.state.newOrder.side, stockId: this.state.newOrder.stockId,
-      quantity: this.state.newOrder.quantity, price: this.state.newOrder.price
+      partyId: this.state.newOrder.partyId,
+      side: this.state.newOrder.side,
+      stockId: this.state.newOrder.stockId,
+      quantity: this.state.newOrder.quantity,
+      price: this.state.newOrder.price,
     };
 
-    fetch(SERVICE_URL + 'addOrder?' + new URLSearchParams(params), {
-      method: 'post'
-    }).then(response => response.text())
+    fetch(SERVICE_URL + "addOrder?" + new URLSearchParams(params), {
+      method: "post",
+    }).then((response) => response.text());
 
     let orders = this.state.orders;
     orders.push(this.state.newOrder);
@@ -281,17 +285,18 @@ class App extends Component {
 
     // let idToCancel = event.target.value;
 
-    fetch(SERVICE_URL + 'cancelOrder?orderId=' + idToCancel, {
-      method: 'post'
-    }).then(response => response.text()).then(() => this.filterStockOrders(this.state.selectedStock))
-
-  }
+    fetch(SERVICE_URL + "cancelOrder?orderId=" + idToCancel, {
+      method: "post",
+    })
+      .then((response) => response.text())
+      .then(() => this.filterStockOrders(this.state.selectedStock));
+  };
 
   // Called when the stock combo-box is changed
   selectingStock = (stock) => {
     const selectedStock = stock;
     this.setState({ selectedStock: stock }, () => {
-      console.log(this.state.selectedStock+ "has been selected");
+      console.log(this.state.selectedStock + "has been selected");
       this.filterStockOrders(selectedStock);
       this.filterStockTrades(selectedStock);
     });
@@ -300,18 +305,18 @@ class App extends Component {
   //Will fetch the orders for a stock
   filterStockOrders = (selectedStock) => {
     fetch(SERVICE_URL + "liveOrders?stockId=" + selectedStock.id)
-        .then(data => data.json())
-        .then(data => {
-          this.setState({orders: data}, () => {
-            this.splitorders(this.state.orders);
-          });
+      .then((data) => data.json())
+      .then((data) => {
+        this.setState({ orders: data }, () => {
+          this.splitorders(this.state.orders);
         });
+      });
   };
 
-  //Will fetch the trades
+  //Will fetch the trades for a particular stock used in orderbook and historical data page
   filterStockTrades = (selectedStock) => {
     // Gets all the trades for the stock exchange
-    fetch(SERVICE_URL + "trades?stockExchangeId")
+    fetch(SERVICE_URL + "trades?stockExchangeId");
 
     console.log(this.state.selectedStock);
     const allOrders = liveOrders;
@@ -366,7 +371,7 @@ class App extends Component {
                   selectedStock={this.state.selectedStock}
                   stocks={this.state.stocks}
                   selectingStock={this.selectingStock}
-                  trades={this.state.trades}
+                  trades={this.state.stockTrades}
                   orders={this.state.orders}
                   buyOrders={this.state.buyOrders}
                   sellOrders={this.state.sellOrders}
@@ -379,7 +384,7 @@ class App extends Component {
               render={(props) => (
                 <HistoricalData
                   {...props}
-                  trades={this.state.trades}
+                  trades={this.state.stockTrades}
                   stockExchange={stockExchange}
                 />
               )}
@@ -406,6 +411,7 @@ class App extends Component {
                   {...props}
                   order={this.state.currentOrderRecord}
                   orderRecords={this.state.retrievedOrderDetails}
+                  trades={this.state.orderTrades}
                 />
               )}
             />
