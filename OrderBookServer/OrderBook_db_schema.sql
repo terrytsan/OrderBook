@@ -62,7 +62,7 @@ CREATE TABLE trade (
     sellOrderId INT NOT NULL,
     quantity    INT NOT NULL,
     price       DECIMAL(6,2) NOT NULL,
-    timestamp   TIMESTAMP NOT NULL,
+    timestamp   TIMESTAMP(6) NOT NULL,
     CONSTRAINT pk_trade PRIMARY KEY (id),
     CONSTRAINT fk_trade_buyOrder FOREIGN KEY (buyOrderId) REFERENCES orderHistory (id),
     CONSTRAINT fk_trade_sellOrder FOREIGN KEY (sellOrderId) REFERENCES orderHistory (id)

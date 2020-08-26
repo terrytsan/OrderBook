@@ -13,6 +13,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -94,14 +97,14 @@ public class OrderDaoImpl implements OrderDao {
                         "WHERE id = ?";
 
         jdbc.update(UPDATE_ORDER, order.getQuantity(), order.getPrice(), order.getState().toString(), order.getVersion(),
-                order.getTimestamp(), order.getId());
+                Timestamp.valueOf(order.getTimestamp()) , order.getId());
 
         final String ADD_HISTORY =
                 "INSERT INTO orderHistory(orderId, quantity, price, state, version, timestamp) " +
                         "VALUES(?, ?, ?, ?, ?, ?)";
 
         jdbc.update(ADD_HISTORY, order.getId(), order.getQuantity(), order.getPrice(), order.getState().toString(),
-                order.getVersion(), order.getTimestamp());
+                order.getVersion(), Timestamp.valueOf(order.getTimestamp()));
     }
 
     @Transactional
@@ -111,7 +114,7 @@ public class OrderDaoImpl implements OrderDao {
                 "INSERT INTO `order`(stockId, partyId, side, quantity, price, state, version, timestamp) " +
                         "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         jdbc.update(ADD_ORDER, order.getStock().getId(), order.getParty().getId(), order.getSide().toString(), order.getQuantity(),
-                order.getPrice(), order.getState().toString(), order.getVersion(), order.getTimestamp());
+                order.getPrice(), order.getState().toString(), order.getVersion(), Timestamp.valueOf(order.getTimestamp()));
 
         order.setId(jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
 
@@ -120,7 +123,7 @@ public class OrderDaoImpl implements OrderDao {
                         "VALUES(?, ?, ?, ?, ?, ?)";
 
         jdbc.update(ADD_HISTORY, order.getId(), order.getQuantity(), order.getPrice(), order.getState().toString(),
-                order.getVersion(), order.getTimestamp());
+                order.getVersion(), Timestamp.valueOf(order.getTimestamp()));
     }
 
     @Override
@@ -175,7 +178,7 @@ public class OrderDaoImpl implements OrderDao {
             order.setPrice(rs.getBigDecimal("price"));
             order.setState(State.valueOf(rs.getString("state")));
             order.setVersion(rs.getInt("version"));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnn");
             order.setTimestamp(LocalDateTime.parse(rs.getString("timestamp"), formatter));
             return order;
         }

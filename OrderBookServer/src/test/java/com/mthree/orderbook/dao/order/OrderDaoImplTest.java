@@ -64,10 +64,11 @@ class OrderDaoImplTest {
         order.setPrice(new BigDecimal("300"));
         order.setState(State.LIVE);
         order.setVersion(1);
-        order.setTimestamp(LocalDateTime.now().withNano(0));
+        order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
+        Order result = orderDao.getOrderById(order.getId());
 
-        assertEquals(order, orderDao.getOrderById(order.getId()));
+        assertEquals(order, result);
     }
 
     @Test
@@ -98,7 +99,7 @@ class OrderDaoImplTest {
         order.setPrice(new BigDecimal("300"));
         order.setState(State.LIVE);
         order.setVersion(1);
-        order.setTimestamp(LocalDateTime.now().withNano(0));
+        order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
 
         Order order2 = new Order();
@@ -109,7 +110,7 @@ class OrderDaoImplTest {
         order2.setPrice(new BigDecimal("300"));
         order2.setState(State.CANCELLED);
         order2.setVersion(1);
-        order2.setTimestamp(LocalDateTime.now().withNano(0));
+        order2.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getLiveOrders(stock.getId());
@@ -145,7 +146,7 @@ class OrderDaoImplTest {
         order.setPrice(new BigDecimal("300"));
         order.setState(State.LIVE);
         order.setVersion(1);
-        order.setTimestamp(LocalDateTime.now().withNano(0));
+        order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
 
         Order order2 = new Order();
@@ -156,7 +157,7 @@ class OrderDaoImplTest {
         order2.setPrice(new BigDecimal("300"));
         order2.setState(State.LIVE);
         order2.setVersion(1);
-        order2.setTimestamp(LocalDateTime.now().withNano(0));
+        order2.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getLiveBuyOrders(stock.getId());
@@ -192,7 +193,7 @@ class OrderDaoImplTest {
         order.setPrice(new BigDecimal("300"));
         order.setState(State.LIVE);
         order.setVersion(1);
-        order.setTimestamp(LocalDateTime.now().withNano(0));
+        order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
 
         Order order2 = new Order();
@@ -203,7 +204,7 @@ class OrderDaoImplTest {
         order2.setPrice(new BigDecimal("300"));
         order2.setState(State.LIVE);
         order2.setVersion(1);
-        order2.setTimestamp(LocalDateTime.now().withNano(0));
+        order2.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getLiveSellOrders(stock.getId());
@@ -239,7 +240,7 @@ class OrderDaoImplTest {
         order.setPrice(new BigDecimal("300"));
         order.setState(State.LIVE);
         order.setVersion(1);
-        order.setTimestamp(LocalDateTime.now().withNano(0));
+        order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
 
         Order order2 = new Order();
@@ -250,7 +251,7 @@ class OrderDaoImplTest {
         order2.setPrice(new BigDecimal("300"));
         order2.setState(State.LIVE);
         order2.setVersion(1);
-        order2.setTimestamp(LocalDateTime.now().withNano(0));
+        order2.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order2);
 
         List<Order> orders = orderDao.getOrdersForStock(stock.getId());
@@ -286,7 +287,7 @@ class OrderDaoImplTest {
         order.setPrice(new BigDecimal("300"));
         order.setState(State.LIVE);
         order.setVersion(1);
-        order.setTimestamp(LocalDateTime.now().withNano(0));
+        order.setTimestamp(LocalDateTime.now());
         orderDao.addOrder(order);
 
         order.setQuantity(50);
