@@ -11,7 +11,6 @@ class OrderManager extends Component {
       stocks,
       selectingStock,
       orders,
-      counterParties,
       getAllOrderDetails,
     } = this.props;
     return (
@@ -27,7 +26,6 @@ class OrderManager extends Component {
           </div>
           <AllOrdersManaged
             orders={orders}
-            counterParties={counterParties}
             getAllOrderDetails={getAllOrderDetails}
           />
         </div>

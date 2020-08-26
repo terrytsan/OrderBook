@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 class ManageOrder extends Component {
   state = {};
   render() {
     const { id, time, price, quantity, side, party } = this.props.order;
-    const { counterParties } = this.props;
     return (
       <div className="row m-2" id={id}>
         <div className="id col">{id}</div>

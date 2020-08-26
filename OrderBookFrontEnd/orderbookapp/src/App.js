@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 //Component Links
 import Navigation from "./components/navigation.jsx";
@@ -104,7 +104,13 @@ class App extends Component {
       },
     ],
     orders: [],
-    currentOrderRecord: {},
+    currentOrderRecord: {
+      quantity: "",
+      price: "",
+      side: "BUY",
+      partyId: "1",
+      stockId: "1",
+    },
     trades: [],
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
@@ -242,6 +248,7 @@ class App extends Component {
     */
   };
 
+  // Used in orderManaged to update a certain record
   retrieveOrderDetails = (orderId) => {
     const OrderRecord = this.state.orders.find((order) => order.id === orderId);
     this.setState({ currentOrderRecord: OrderRecord });
@@ -313,6 +320,7 @@ class App extends Component {
                   {...props}
                   counterParties={this.state.counterParties}
                   stocks={this.state.stocks}
+                  currentOrderRecord={this.state.currentOrderRecord}
                 />
               )}
             />
@@ -325,7 +333,6 @@ class App extends Component {
                   stocks={this.state.stocks}
                   selectingStock={this.selectingStock}
                   orders={this.state.orders}
-                  counterParties={this.state.counterParties}
                   getAllOrderDetails={this.getAllOrderDetails}
                 />
               )}
