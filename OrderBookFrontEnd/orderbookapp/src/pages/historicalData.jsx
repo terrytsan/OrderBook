@@ -7,7 +7,7 @@ import TradeGraph from "./../components/historicTrades/tradeGraph.jsx";
 
 class HistoricalData extends Component {
   render() {
-    let { trades } = this.props;
+    let { trades, stockExchange } = this.props;
     return (
       <div>
         <h1>Historical Data</h1>
@@ -15,7 +15,13 @@ class HistoricalData extends Component {
           <Switch>
             <Route
               path="/pastTrades"
-              render={(props) => <TradeTable trades={trades} {...props} />}
+              render={(props) => (
+                <TradeTable
+                  trades={trades}
+                  {...props}
+                  stockExchange={stockExchange}
+                />
+              )}
               exact
             />
             <Route
