@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class ManageOrder extends Component {
-  state = {};
+  state = { redirect: null };
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
     const { id, time, price, quantity, side, party } = this.props.order;
     return (
       <div className="row m-2" id={id}>
@@ -16,24 +19,18 @@ class ManageOrder extends Component {
         <div className="col">
           <button
             className="btn btn-outline-primary btn-sm"
-            onClick={() => {
-              this.props.getAllOrderDetails(id);
-            }}
+            onClick={() => this.prepareForOrderDetails(id)}
           >
             Details
           </button>
         </div>
         <div className="col">
-          <Link
-            to={{
-              pathname: "/updateOrder",
-              aboutOrder: { order: this.props.order },
-            }}
+          <button
+            className="btn btn-outline-primary btn-sm"
+            onClick={() => this.prepareForOrderUpdate(id)}
           >
-            <button className="btn btn-outline-primary btn-sm">
-              Update Order
-            </button>
-          </Link>
+            Update Order
+          </button>
         </div>
         <div className="col">
           <button className="btn btn-outline-danger btn-sm">
@@ -43,6 +40,16 @@ class ManageOrder extends Component {
       </div>
     );
   }
+
+  prepareForOrderUpdate = (orderID) => {
+    this.props.retrieveOrderDetails(orderID);
+    this.setState({ redirect: "/updateOrder" });
+  };
+
+  prepareForOrderDetails = (orderID) => {
+    this.props.getAllOrderDetails(orderID);
+    this.setState({ redirect: "/orderDetails" });
+  };
 }
 
 export default ManageOrder;

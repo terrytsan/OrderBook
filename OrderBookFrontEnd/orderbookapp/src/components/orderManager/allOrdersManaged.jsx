@@ -5,7 +5,7 @@ import OrderManaged from "./orderManaged.jsx";
 class AllOrdersManaged extends Component {
   state = {};
   render() {
-    const { orders, getAllOrderDetails } = this.props;
+    const { orders, getAllOrderDetails, retrieveOrderDetails } = this.props;
     return (
       <div className="container-fluid border m-2">
         <div className="row m-2">
@@ -24,6 +24,7 @@ class AllOrdersManaged extends Component {
             key={orders.indexOf(order)}
             order={order}
             getAllOrderDetails={getAllOrderDetails}
+            retrieveOrderDetails={retrieveOrderDetails}
           />
         ))}
       </div>
