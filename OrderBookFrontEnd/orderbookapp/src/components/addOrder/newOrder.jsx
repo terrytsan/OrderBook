@@ -1,20 +1,25 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 class NewOrder extends Component {
-  state = {};
+  state = { redirect: null };
+
+  submittedNewUpdate = () => {
+    this.props.handleSubmit();
+    this.setState({ redirect: "/" });
+  };
 
   render() {
-    let {
-      counterParties,
-      types,
-      stocks,
-      handleChange,
-      newOrder,
-      handleSubmit,
-    } = this.props;
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />;
+    }
+    let { counterParties, types, stocks, handleChange, newOrder } = this.props;
     return (
-      <Form className="container border" onSubmit={this.handleSubmit}>
+      <Form
+        className="container border"
+        onSubmit={() => this.submittedNewUpdate()}
+      >
         <Form.Group controlId="orderParty">
           <Form.Label>Party</Form.Label>
           <Form.Control
