@@ -4,15 +4,16 @@ import Ticker from "react-ticker";
 class TickerFeed extends Component {
   state = {};
   render() {
+      const {tickerFeedTrades} = this.props;
     return (
       <div>
         <br />
         <br />
         <div className="fixed-bottom">
-          <Ticker speed={10}>
+          <Ticker speed={10} offset="run-in">
             {({ index }) => (
               <>
-                <h5>Not yet Functioning!!!</h5>
+                <h5>{tickerFeedTrades[0].buyOrder.stock.symbol + " " + tickerFeedTrades[0].price}</h5>
               </>
             )}
           </Ticker>

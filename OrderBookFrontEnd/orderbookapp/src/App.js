@@ -144,6 +144,17 @@ class App extends Component {
       price: 71.0,
       timestamp: "2020-08-26T23:07:06.750099",
     }],
+    // Holds the trades to display in the ticker feed
+    tickerFeedTrades: [{
+      id:1,
+      buyOrder: {id: 1, stock: {id: 2, stockExchangeId: 1, symbol: "TSL", name: "Tesla", maxQuantity: 200, tickSize: 10,}, party: {id:1, symbol:"CP1", name:"CP1"}, side: "SELL", quantity: 150, price: 71, timestamp: "2020-08-26T15:10:40.218", state: "LIVE", version: 1},
+      sellOrder: {id: 1, stock: {id: 2, stockExchangeId: 1, symbol: "TSL", name: "Tesla", maxQuantity: 200, tickSize: 10,}, party: {id:1, symbol:"CP1", name:"CP1"}, side: "SELL", quantity: 150, price: 71, timestamp: "2020-08-26T15:10:40.218", state: "LIVE", version: 1},
+      quantity: 14,
+      price: 71.00,
+      timestamp: "2020-08-26T23:07:06.750099"
+    }],
+    // Holds the number of trades to store in tickerFeedTrades
+    tickerFeedTradeCount: 10,
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
     ],
@@ -162,6 +173,7 @@ class App extends Component {
   componentDidMount() {
     this.updatePartiesList();
     this.updateStocksList();
+    this.getTradesForTickerFeed();
   }
 
   // Gets a list of stocks from the endpoint - using the "global" stockExchange object
@@ -342,6 +354,12 @@ class App extends Component {
       .then(console.log(this.state.orderHistory));
   };
 
+  getTradesForTickerFeed = () => {
+    fetch(SERVICE_URL + "trades?stockExchangeId=" + stockExchange.id + "&number=" + this.state.tickerFeedTradeCount)
+        .then((data) => data.json())
+        .then((data) => this.setState({ tickerFeedTrades: data }))
+  }
+
   //This method is used to split the order based on the side
   splitorders = (orders) => {
     const buyOrders = orders.filter((order) => order.side === "BUY");
@@ -461,7 +479,7 @@ class App extends Component {
             <Route component={Error} />
           </Switch>
         </BrowserRouter>
-        <TickerFeed />
+        <TickerFeed tickerFeedTrades={this.state.tickerFeedTrades}/>
       </React.Fragment>
     );
   }
