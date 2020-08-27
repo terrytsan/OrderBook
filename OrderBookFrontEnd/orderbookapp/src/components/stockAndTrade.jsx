@@ -15,6 +15,7 @@ class StockAndTrade extends Component {
               selectedStock={selectedStock}
               stocks={stocks}
               selectingStock={selectingStock}
+              trades={trades}
             />
           </div>
         </div>

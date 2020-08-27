@@ -98,7 +98,7 @@ class App extends Component {
           name: "Tesla",
           maxQuantity: 200,
           tickSize: 10,
-          version: 1
+          version: 1,
         },
       },
     ],
@@ -148,14 +148,50 @@ class App extends Component {
       },
     ],
     // Holds the trades to display in the ticker feed
-    tickerFeedTrades: [{
-      id:1,
-      buyOrder: {id: 1, stock: {id: 2, stockExchangeId: 1, symbol: "TSL", name: "Tesla", maxQuantity: 200, tickSize: 10,}, party: {id:1, symbol:"CP1", name:"CP1"}, side: "SELL", quantity: 150, price: 71, timestamp: "2020-08-26T15:10:40.218", state: "LIVE", version: 1},
-      sellOrder: {id: 1, stock: {id: 2, stockExchangeId: 1, symbol: "TSL", name: "Tesla", maxQuantity: 200, tickSize: 10,}, party: {id:1, symbol:"CP1", name:"CP1"}, side: "SELL", quantity: 150, price: 71, timestamp: "2020-08-26T15:10:40.218", state: "LIVE", version: 1},
-      quantity: 14,
-      price: 71.00,
-      timestamp: "2020-08-26T23:07:06.750099"
-    }],
+    tickerFeedTrades: [
+      {
+        id: 1,
+        buyOrder: {
+          id: 1,
+          stock: {
+            id: 2,
+            stockExchangeId: 1,
+            symbol: "TSL",
+            name: "Tesla",
+            maxQuantity: 200,
+            tickSize: 10,
+          },
+          party: { id: 1, symbol: "CP1", name: "CP1" },
+          side: "SELL",
+          quantity: 150,
+          price: 71,
+          timestamp: "2020-08-26T15:10:40.218",
+          state: "LIVE",
+          version: 1,
+        },
+        sellOrder: {
+          id: 1,
+          stock: {
+            id: 2,
+            stockExchangeId: 1,
+            symbol: "TSL",
+            name: "Tesla",
+            maxQuantity: 200,
+            tickSize: 10,
+          },
+          party: { id: 1, symbol: "CP1", name: "CP1" },
+          side: "SELL",
+          quantity: 150,
+          price: 71,
+          timestamp: "2020-08-26T15:10:40.218",
+          state: "LIVE",
+          version: 1,
+        },
+        quantity: 14,
+        price: 71.0,
+        timestamp: "2020-08-26T23:07:06.750099",
+      },
+    ],
     // Holds the number of trades to store in tickerFeedTrades
     tickerFeedTradeCount: 10,
     counterParties: [
@@ -358,10 +394,16 @@ class App extends Component {
   };
 
   getTradesForTickerFeed = () => {
-    fetch(SERVICE_URL + "trades?stockExchangeId=" + stockExchange.id + "&number=" + this.state.tickerFeedTradeCount)
-        .then((data) => data.json())
-        .then((data) => this.setState({ tickerFeedTrades: data }))
-  }
+    fetch(
+      SERVICE_URL +
+        "trades?stockExchangeId=" +
+        stockExchange.id +
+        "&number=" +
+        this.state.tickerFeedTradeCount
+    )
+      .then((data) => data.json())
+      .then((data) => this.setState({ tickerFeedTrades: data }));
+  };
 
   //This method is used to split the order based on the side
   splitorders = (orders) => {
@@ -472,6 +514,7 @@ class App extends Component {
                   stocks={this.state.stocks}
                   selectingStock={this.selectingStock}
                   orders={this.state.orders}
+                  trades={this.state.stockTrades}
                   getAllOrderDetails={this.getAllOrderDetails}
                   retrieveOrderDetails={this.retrieveOrderDetails}
                   handleCancelOrderClick={this.handleCancelOrderClick}
@@ -482,7 +525,7 @@ class App extends Component {
             <Route component={Error} />
           </Switch>
         </BrowserRouter>
-        <TickerFeed tickerFeedTrades={this.state.tickerFeedTrades}/>
+        <TickerFeed tickerFeedTrades={this.state.tickerFeedTrades} />
       </React.Fragment>
     );
   }

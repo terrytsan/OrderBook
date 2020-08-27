@@ -32,7 +32,7 @@ class Stock extends Component {
   }
 
   render() {
-    const { selectedStock, stocks } = this.props;
+    const { selectedStock, stocks, trades } = this.props;
     console.log("The selectedStock is: " + selectedStock.id);
     let stocksList = [];
     stocks.map((stock) => stocksList.push(stock.symbol));
