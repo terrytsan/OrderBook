@@ -192,7 +192,7 @@ class App extends Component {
       },
     ],
     // Holds the number of trades to store in tickerFeedTrades
-    tickerFeedTradeCount: 10,
+    tickerFeedTradeCount: 7,
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
     ],
