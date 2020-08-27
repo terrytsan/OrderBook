@@ -6,7 +6,7 @@ class TradeGraph extends Component {
   render() {
     const { trades } = this.props;
     return (
-      <div className="container border m-4">
+      <div className="container-fuild border">
         <h2>Trade Graph</h2>
       </div>
     );

@@ -16,8 +16,8 @@ class HistoricalData extends Component {
       stockExchange,
     } = this.props;
     return (
-      <div>
-        <h1>Historical Data</h1>
+      <div className="container-fluid">
+        <h1 className="m-2">Historical Data</h1>
         <div className="row m-2">
           <Stock
             selectedStock={selectedStock}

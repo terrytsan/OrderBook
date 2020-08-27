@@ -18,7 +18,7 @@ class StockAndTrade extends Component {
             />
           </div>
         </div>
-        <div className="col m-2 border">
+        <div className="col m-2">
           <TradeGraph trades={trades} />
         </div>
       </div>
