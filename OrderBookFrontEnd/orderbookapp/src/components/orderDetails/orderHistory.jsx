@@ -51,18 +51,23 @@ class OrderHistory extends Component {
   };
 
   render() {
-
     // this.getTradePrice(this.props.orderHistory.id, this.props.side);
-    const { orderHistory, side, orderTrade, orderTradeCounterParty} = this.props;
+    const {
+      orderHistory,
+      side,
+      orderTrade,
+      orderTradeCounterParty,
+    } = this.props;
     return (
       <div className="row m-2">
         <div className="versionNo col">{orderHistory.version}</div>
         <div className="quantity col">{orderHistory.quantity}</div>
         <div className="price col">{"£" + orderHistory.price}</div>
-        <div className="tradePrice col">{(orderTrade.price !== undefined) ? "£" + orderTrade.price : ""}</div>
-        <div className="tradeQuantity col">
-          {orderTrade.quantity}
+        <div className="side col">{orderHistory.state}</div>
+        <div className="tradePrice col">
+          {orderTrade.price !== undefined ? "£" + orderTrade.price : ""}
         </div>
+        <div className="tradeQuantity col">{orderTrade.quantity}</div>
         <div className="tradeTime col">{orderTrade.timestamp}</div>
         {/*<div className="tradeParty col">{this.getCounterParty(side)}</div>*/}
         <div className="tradeParty col">{orderTradeCounterParty}</div>
