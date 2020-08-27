@@ -76,7 +76,7 @@ class App extends Component {
     orders: [],
     // Holds the data for updating an order
     currentOrderRecord: {
-      id:"",
+      id: "",
       quantity: "",
       price: "",
       side: "BUY",
@@ -226,20 +226,13 @@ class App extends Component {
     // Combine the params to perform the updateOrder
     let params = {
       orderId: this.state.currentOrderRecord.id,
-      quantity: this.state.currentOrderRecord.quantity, price: this.state.currentOrderRecord.price
+      quantity: this.state.currentOrderRecord.quantity,
+      price: this.state.currentOrderRecord.price,
     };
 
-    fetch(SERVICE_URL + 'updateOrder?' + new URLSearchParams(params), {
-      method: 'post'
-    }).then(response => response.text())
-
-    //Will update in the backend
-    let orders = this.state.orders;
-    orders.push(this.state.currentOrderRecord);
-    this.setState({ orders }, () => {
-      console.log(orders);
-      this.splitorders(this.state.orders);
-    });
+    fetch(SERVICE_URL + "updateOrder?" + new URLSearchParams(params), {
+      method: "post",
+    }).then((response) => response.text());
   };
 
   handleCancelOrderClick = (idToCancel) => {
