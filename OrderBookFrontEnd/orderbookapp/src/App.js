@@ -98,6 +98,7 @@ class App extends Component {
           name: "Tesla",
           maxQuantity: 200,
           tickSize: 10,
+          version: 1
         },
       },
     ],
