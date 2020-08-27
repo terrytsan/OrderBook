@@ -339,7 +339,10 @@ class App extends Component {
       method: "post",
     })
       .then((response) => response.text())
-      .then(() => this.filterStockOrders(this.state.selectedStock));
+      .then(() => {
+        this.filterStockOrders(this.state.selectedStock);
+        this.getAllOrders(this.state.selectedStock);
+      });
   };
 
   // Called when the stock combo-box is changed
