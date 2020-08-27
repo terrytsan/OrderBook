@@ -286,7 +286,8 @@ class App extends Component {
 
     fetch(SERVICE_URL + "addOrder?" + new URLSearchParams(params), {
       method: "post",
-    }).then((response) => response.text());
+    }).then((response) => response.text())
+        .then(()=>this.filterStockOrders(this.state.selectedStock));
 
     let orders = this.state.orders;
     orders.push(this.state.newOrder);
