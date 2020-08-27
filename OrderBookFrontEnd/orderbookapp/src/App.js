@@ -441,7 +441,7 @@ class App extends Component {
 
   // Used in orderManaged to update a certain record
   retrieveOrderDetails = (orderId) => {
-    const OrderRecord = this.state.orders.find((order) => order.id === orderId);
+    const OrderRecord = this.state.allOrders.find((order) => order.id === orderId);
     this.setState({ currentOrderRecord: OrderRecord }, () => {
       console.log(this.state.currentOrderRecord);
     });
