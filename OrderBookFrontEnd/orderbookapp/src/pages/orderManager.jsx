@@ -17,7 +17,7 @@ class OrderManager extends Component {
       trades,
     } = this.props;
     return (
-      <div>
+      <div className="container-fluid">
         <h1>Order Manager</h1>
         <div>
           <div className="row m-2">

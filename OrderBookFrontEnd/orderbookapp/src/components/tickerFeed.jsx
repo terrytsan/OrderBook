@@ -10,7 +10,7 @@ class TickerFeed extends Component {
       <div>
         <br />
         <br />
-        <div className="fixed-bottom">
+        <div className="fixed-bottom tickerFeed">
           <Ticker>
             {() => <h1>{this.compileListOfTrades(tickerFeedTrades)}</h1>}
           </Ticker>

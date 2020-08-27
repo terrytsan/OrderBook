@@ -20,7 +20,7 @@ class UpdateOrder extends Component {
   render() {
     const { order, handleSubmit, handleChange } = this.props;
     return (
-      <div>
+      <div className="container">
         <h1>Update Order</h1>
         <UpdatingCurrentOrder
           order={order}

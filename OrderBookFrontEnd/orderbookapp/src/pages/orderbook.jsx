@@ -17,7 +17,7 @@ class OrderBook extends Component {
       sellOrders,
     } = this.props;
     return (
-      <div>
+      <div className="container-fluid">
         <h1>Order Book (Main)</h1>
         <div>
           <StockAndTrade

@@ -4,8 +4,12 @@ class Help extends Component {
   state = {};
   render() {
     return (
-      <div>
-        <h1>Help</h1>
+      <div className="container help">
+        <h4>Hi User,</h4>
+        <p>
+          We are looking to launch the help facility! It will soon be up and
+          running.
+        </p>
       </div>
     );
   }
