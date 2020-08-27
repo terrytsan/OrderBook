@@ -22,6 +22,7 @@ class FilterOrders extends Component {
               as="select"
               name="state"
               onChange={handleFilterChange}
+              defaultValue={selectedFilter}
             >
               {this.state.states.map((state) => (
                 <option value={state}>{state}</option>
