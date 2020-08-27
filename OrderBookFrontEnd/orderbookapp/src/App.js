@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { myConfig } from './config.js';
 
 //Component Links
 import Navigation from "./components/navigation.jsx";
@@ -15,8 +16,7 @@ import Help from "./pages/help.jsx";
 import UpdateOrder from "./pages/updateOrder.jsx";
 import OrderDetails from "./pages/orderDetails.jsx";
 
-const SERVICE_URL =
-  "http://startpage-env.eba-2npqnjuc.eu-west-2.elasticbeanstalk.com/";
+const SERVICE_URL = myConfig.service_url
 
 let stockExchange = {
   id: 1,
