@@ -1,0 +1,14 @@
+.tickerFeed {
+  background-color: black;
+  color: white;
+}
+
+.help {
+  text-align: center;
+  margin-block-start: 10%;
+}
+
+.header {
+  text-align: center;
+  font-weight: bolder;
+}
