@@ -47,62 +47,28 @@ class OrderHistory extends Component {
   };
 
   componentWillMount = () => {
-    this.getTradePrice(this.props.orderHistory.id, this.props.side);
+    // this.getTradePrice(this.props.orderHistory.id, this.props.side);
   };
 
   render() {
-    this.getTradePrice(this.props.orderHistory.id, this.props.side);
-    const { orderHistory, side } = this.props;
+
+    // this.getTradePrice(this.props.orderHistory.id, this.props.side);
+    const { orderHistory, side, orderTrade, orderTradeCounterParty} = this.props;
     return (
       <div className="row m-2">
         <div className="versionNo col">{orderHistory.version}</div>
         <div className="quantity col">{orderHistory.quantity}</div>
-        <div className="price col">{orderHistory.price}</div>
-        <div className="tradePrice col">{this.state.orderTrade.price}</div>
+        <div className="price col">{"£" + orderHistory.price}</div>
+        <div className="tradePrice col">{(orderTrade.price !== undefined) ? "£" + orderTrade.price : ""}</div>
         <div className="tradeQuantity col">
-          {this.state.orderTrade.quantity}
+          {orderTrade.quantity}
         </div>
-        <div className="tradeTime col">{this.state.orderTrade.timestamp}</div>
-        <div className="tradeParty col">{this.getCounterParty(side)}</div>
+        <div className="tradeTime col">{orderTrade.timestamp}</div>
+        {/*<div className="tradeParty col">{this.getCounterParty(side)}</div>*/}
+        <div className="tradeParty col">{orderTradeCounterParty}</div>
       </div>
     );
   }
-
-  //Get the price for a trade
-  getTradePrice = (orderHistoryId, side) => {
-    const allTrades = this.props.allOrderTrades;
-    let orderTrade;
-    if (side === "BUY") {
-      orderTrade = allTrades.find(
-        (trade) => trade.buyOrder.id === orderHistoryId
-      );
-    } else {
-      orderTrade = allTrades.find(
-        (trade) => trade.sellOrder.id === orderHistoryId
-      );
-    }
-    this.setState({ orderTrade });
-  };
-
-  //Gets the counter party for a particular order
-  getCounterParty = (side) => {
-    const orderTrade = this.state.orderTrade;
-    let counterParty;
-    if (side === "BUY") {
-      counterParty =
-        orderTrade.sellOrder.party.symbol +
-        " (" +
-        orderTrade.sellOrder.party.name +
-        ")";
-    } else {
-      counterParty =
-        orderTrade.buyOrder.party.symbol +
-        " (" +
-        orderTrade.buyOrder.party.name +
-        ")";
-    }
-    return counterParty;
-  };
 }
 
 export default OrderHistory;

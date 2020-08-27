@@ -17,14 +17,39 @@ class OrderHistoryTable extends Component {
           <div className="tradeTime col">Time Of Trade</div>
           <div className="tradeParty col">CounterParty</div>
         </div>
-        {orderRecords.map((orderRecord) => (
-          <OrderHistory
-            key={orderRecords.indexOf(orderRecord)}
-            orderHistory={orderRecord}
-            allOrderTrades={allOrderTrades}
-            side={order.side}
-          />
-        ))}
+        {orderRecords.map(function (orderRecord) {
+          let orderTrade;
+          // The counter party associated with the current trade of the order
+          let orderTradeCounterParty;
+
+          if (order.side === "BUY") {
+            orderTrade = allOrderTrades.find(
+                trade => trade.buyOrder.version === orderRecord.version
+            ) || {};
+            orderTradeCounterParty = (Object.keys(orderTrade).length !== 0) ?
+                orderTrade.sellOrder.party.symbol +
+                " (" +
+                orderTrade.sellOrder.party.name +
+                ")" : "";
+          } else {
+            orderTrade = allOrderTrades.find(
+                trade => trade.sellOrder.version === orderRecord.version
+            ) || {};
+            orderTradeCounterParty =(Object.keys(orderTrade).length !== 0) ?
+                orderTrade.buyOrder.party.symbol +
+                " (" +
+                orderTrade.buyOrder.party.name +
+                ")" : "";
+          }
+
+          return <OrderHistory
+              key={orderRecords.indexOf(orderRecord)}
+              orderHistory={orderRecord}
+              orderTrade={orderTrade}
+              side={order.side}
+              orderTradeCounterParty={orderTradeCounterParty}
+          />;
+        })}
       </div>
     );
   }
