@@ -192,7 +192,7 @@ class App extends Component {
       },
     ],
     // Holds the number of trades to store in tickerFeedTrades
-    tickerFeedTradeCount: 10,
+    tickerFeedTradeCount: 7,
     counterParties: [
       { id: -1, symbol: "FAKE", name: "FAKE IT TILL YOU MAKE IT" },
     ],
@@ -228,6 +228,8 @@ class App extends Component {
           this.filterStockOrders(data[0]);
           // fetch all orders relating to the first stock
           this.getAllOrders(data[0]);
+          // fetch all the trades
+          this.filterStockTrades(data[0])
         });
         console.log("received: " + data);
         console.log("stocks state is now:" + this.state.stocks);
@@ -286,7 +288,8 @@ class App extends Component {
 
     fetch(SERVICE_URL + "addOrder?" + new URLSearchParams(params), {
       method: "post",
-    }).then((response) => response.text());
+    }).then((response) => response.text())
+        .then(()=>this.filterStockOrders(this.state.selectedStock));
 
     let orders = this.state.orders;
     orders.push(this.state.newOrder);

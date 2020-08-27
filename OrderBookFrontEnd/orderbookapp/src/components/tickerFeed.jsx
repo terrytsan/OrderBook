@@ -4,30 +4,37 @@ import Ticker from "react-ticker";
 class TickerFeed extends Component {
   state = {};
   render() {
-    const { tickerFeedTrades } = this.props;
-    console.log(tickerFeedTrades);
+    let trades = this.compileListOfTrades();
     return (
       <div>
         <br />
         <br />
         <div className="fixed-bottom tickerFeed">
-          <Ticker>
-            {() => <h1>{this.compileListOfTrades(tickerFeedTrades)}</h1>}
+          <Ticker mode="smooth" speed="20">
+            {() => (
+              <h1>
+                {this.props.tickerFeedTrades.map(
+                  (trade) =>
+                    trade.buyOrder.stock.symbol + " " + trade.price + " +++ "
+                )}
+              </h1>
+            )}
           </Ticker>
         </div>
       </div>
     );
   }
-  compileListOfTrades = (listOfTrades) => {
+  compileListOfTrades = () => {
     let tradeStatement = "          ";
-    listOfTrades.map((trade) =>
-      tradeStatement.concat(
-        trade.buyOrder.stock.symbol + " " + trade.price + "         |         "
-      )
-    );
-    console.log(tradeStatement);
+    this.props.tickerFeedTrades.map((trade) => console.log(trade));
     return tradeStatement;
   };
 }
 
 export default TickerFeed;
+
+/*
+tradeStatement.concat(
+        trade.buyOrder.stock.symbol + " " + trade.price + "         |         "
+      )
+      */
