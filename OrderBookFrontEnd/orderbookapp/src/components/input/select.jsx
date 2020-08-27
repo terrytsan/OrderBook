@@ -2,8 +2,10 @@ import React from "react";
 
 const Select = (props) => {
   return (
-    <div className="form-group">
-      <label htmlFor={props.name}>{props.title}</label>
+    <div className="form-group row container">
+      <label htmlFor={props.name} className="m-2">
+        {props.title}
+      </label>
       <br />
       <select name={props.name} value={props.value} onChange={props.onChange}>
         <option value="" disabled>

@@ -34,6 +34,7 @@ class Stock extends Component {
   render() {
     const { selectedStock, stocks, trades } = this.props;
     console.log("The selectedStock is: " + selectedStock.id);
+    console.log(trades[trades.length - 1]);
     let stocksList = [];
     stocks.map((stock) => stocksList.push(stock.symbol));
     return (
@@ -50,7 +51,9 @@ class Stock extends Component {
           />
         </div>
         <div className="col">
-          <h2>Stock Details</h2>
+          <h5 className="stockDetails">Stock Details</h5>
+          <p>{"Stock Name: " + selectedStock.name}</p>
+          <p></p>
         </div>
       </React.Fragment>
     );
