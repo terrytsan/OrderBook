@@ -7,7 +7,7 @@ class Trade extends Component {
     return (
       <div className="row">
         <div className="id col">{trade.id}</div>
-        <div className="soldPrice col">{trade.price}</div>
+        <div className="soldPrice col">{"£" + trade.price}</div>
         <div className="soldAmount col">{trade.quantity}</div>
         <div className="CCP col">{stockExchange.centralCounterParty}</div>
         <div className="stock col">{trade.buyOrder.stock.symbol}</div>

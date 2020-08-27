@@ -14,7 +14,7 @@ class ManageOrder extends Component {
         <div className="id col">{id}</div>
         <div className="time col">{timestamp}</div>
         <div className="quantity col">{quantity}</div>
-        <div className="price col">{price}</div>
+        <div className="price col">{"£" + price}</div>
         <div className="side col">{side}</div>
         <div className="partySymbol col">{party.symbol}</div>
         <div className="col">
@@ -34,8 +34,10 @@ class ManageOrder extends Component {
           </button>
         </div>
         <div className="col">
-          <button className="btn btn-outline-danger btn-sm"
-          onClick={() => handleCancelOrderClick(id)}>
+          <button
+            className="btn btn-outline-danger btn-sm"
+            onClick={() => handleCancelOrderClick(id)}
+          >
             Cancel Order
           </button>
         </div>
