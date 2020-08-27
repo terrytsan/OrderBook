@@ -25,7 +25,9 @@ class FilterOrders extends Component {
               defaultValue={selectedFilter}
             >
               {this.state.states.map((state) => (
-                <option value={state}>{state}</option>
+                <option value={state} key={this.state.states.indexOf(state)}>
+                  {state}
+                </option>
               ))}
             </Form.Control>
           </Form.Group>
