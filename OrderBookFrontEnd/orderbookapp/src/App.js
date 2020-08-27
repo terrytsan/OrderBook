@@ -228,6 +228,8 @@ class App extends Component {
           this.filterStockOrders(data[0]);
           // fetch all orders relating to the first stock
           this.getAllOrders(data[0]);
+          // fetch all the trades
+          this.filterStockTrades(data[0])
         });
         console.log("received: " + data);
         console.log("stocks state is now:" + this.state.stocks);
