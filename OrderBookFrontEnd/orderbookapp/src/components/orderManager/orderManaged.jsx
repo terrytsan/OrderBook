@@ -18,34 +18,26 @@ class ManageOrder extends Component {
       party,
       state,
     } = this.props.order;
-    let orderDetails = (
-      <button
-        className="btn btn-outline-primary btn-sm"
-        onClick={() => this.prepareForOrderDetails(id)}
-      >
-        Details
-      </button>
-    );
-    let updateDetails = (
-      <button
-        className="btn btn-outline-primary btn-sm"
-        onClick={() => this.prepareForOrderUpdate(id)}
-      >
-        Update Order
-      </button>
-    );
-    let cancelOrder = (
-      <button
-        className="btn btn-outline-danger btn-sm"
-        onClick={() => handleCancelOrderClick(id)}
-      >
-        Cancel Order
-      </button>
-    );
-    if (state == "COMPLETED") {
-      cancelOrder = " ";
-      updateDetails = " ";
-      orderDetails = " ";
+
+    let updateDetails = " ";
+    let cancelOrder = " ";
+    if (state == "LIVE") {
+      cancelOrder = (
+        <button
+          className="btn btn-outline-danger btn-sm"
+          onClick={() => handleCancelOrderClick(id)}
+        >
+          Cancel Order
+        </button>
+      );
+      updateDetails = (
+        <button
+          className="btn btn-outline-primary btn-sm"
+          onClick={() => this.prepareForOrderUpdate(id)}
+        >
+          Update Order
+        </button>
+      );
     }
     return (
       <Row className="m-2" id={id}>
@@ -55,7 +47,14 @@ class ManageOrder extends Component {
         <Col className="price">{"£" + price}</Col>
         <Col className="side">{side}</Col>
         <Col className="partySymbol">{party.symbol}</Col>
-        <Col className="orderDetailsButton">{orderDetails}</Col>
+        <Col className="orderDetailsButton">
+          <button
+            className="btn btn-outline-primary btn-sm"
+            onClick={() => this.prepareForOrderDetails(id)}
+          >
+            Details
+          </button>
+        </Col>
         <Col className="orderUpdateButton">{updateDetails}</Col>
         <Col className="orderCancelButton">{cancelOrder}</Col>
       </Row>
