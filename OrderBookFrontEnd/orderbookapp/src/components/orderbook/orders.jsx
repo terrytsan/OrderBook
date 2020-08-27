@@ -10,9 +10,9 @@ class Orders extends Component {
     return (
       <div>
         <div className="row">
-          <div className="time col">{this.checkSideColumn1(type)}</div>
-          <div className="shares col">SHARES</div>
-          <div className="price col">{this.checkSideColumn3(type)}</div>
+          <div className="time header col">{this.checkSideColumn1(type)}</div>
+          <div className="shares header col">SHARES</div>
+          <div className="price header col">{this.checkSideColumn3(type)}</div>
         </div>
         {orders.map((order) => (
           <Order key={orders.indexOf(order)} order={order} type={type} />
