@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
 class ManageOrder extends Component {
   state = { redirect: null };
@@ -8,40 +9,56 @@ class ManageOrder extends Component {
       return <Redirect to={this.state.redirect} />;
     }
     const { handleCancelOrderClick } = this.props;
-    const { id, timestamp, price, quantity, side, party } = this.props.order;
+    const {
+      id,
+      timestamp,
+      price,
+      quantity,
+      side,
+      party,
+      state,
+    } = this.props.order;
+    let orderDetails = (
+      <button
+        className="btn btn-outline-primary btn-sm"
+        onClick={() => this.prepareForOrderDetails(id)}
+      >
+        Details
+      </button>
+    );
+    let updateDetails = (
+      <button
+        className="btn btn-outline-primary btn-sm"
+        onClick={() => this.prepareForOrderUpdate(id)}
+      >
+        Update Order
+      </button>
+    );
+    let cancelOrder = (
+      <button
+        className="btn btn-outline-danger btn-sm"
+        onClick={() => handleCancelOrderClick(id)}
+      >
+        Cancel Order
+      </button>
+    );
+    if (state == "COMPLETED") {
+      cancelOrder = " ";
+      updateDetails = " ";
+      orderDetails = " ";
+    }
     return (
-      <div className="row m-2" id={id}>
-        <div className="id col">{id}</div>
-        <div className="time col">{timestamp}</div>
-        <div className="quantity col">{quantity}</div>
-        <div className="price col">{"£" + price}</div>
-        <div className="side col">{side}</div>
-        <div className="partySymbol col">{party.symbol}</div>
-        <div className="col">
-          <button
-            className="btn btn-outline-primary btn-sm"
-            onClick={() => this.prepareForOrderDetails(id)}
-          >
-            Details
-          </button>
-        </div>
-        <div className="col">
-          <button
-            className="btn btn-outline-primary btn-sm"
-            onClick={() => this.prepareForOrderUpdate(id)}
-          >
-            Update Order
-          </button>
-        </div>
-        <div className="col">
-          <button
-            className="btn btn-outline-danger btn-sm"
-            onClick={() => handleCancelOrderClick(id)}
-          >
-            Cancel Order
-          </button>
-        </div>
-      </div>
+      <Row className="m-2" id={id}>
+        <Col className="id">{id}</Col>
+        <Col className="time">{timestamp}</Col>
+        <Col className="quantity">{quantity}</Col>
+        <Col className="price">{"£" + price}</Col>
+        <Col className="side">{side}</Col>
+        <Col className="partySymbol">{party.symbol}</Col>
+        <Col className="orderDetailsButton">{orderDetails}</Col>
+        <Col className="orderUpdateButton">{updateDetails}</Col>
+        <Col className="orderCancelButton">{cancelOrder}</Col>
+      </Row>
     );
   }
 
