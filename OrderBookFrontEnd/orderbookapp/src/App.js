@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { myConfig } from './config.js';
 
 //Component Links
 import Navigation from "./components/navigation.jsx";
@@ -16,7 +15,7 @@ import Help from "./pages/help.jsx";
 import UpdateOrder from "./pages/updateOrder.jsx";
 import OrderDetails from "./pages/orderDetails.jsx";
 
-const SERVICE_URL = myConfig.service_url
+const SERVICE_URL = window['runConfig'].apiUrl;
 
 let stockExchange = {
   id: 1,
