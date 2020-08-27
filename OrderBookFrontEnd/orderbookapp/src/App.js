@@ -206,6 +206,8 @@ class App extends Component {
     },
     buyOrders: [],
     sellOrders: [],
+    // Holds all the orders for the order manager
+    allOrders: [],
   };
 
   componentDidMount() {
@@ -222,8 +224,10 @@ class App extends Component {
         this.setState({ stocks: data });
         // set the first stock to the the default selected one
         this.setState({ selectedStock: data[0] }, () => {
-          // fetch the list of orders related to the first stock
+          // fetch the list of live orders related to the first stock
           this.filterStockOrders(data[0]);
+          // fetch all orders relating to the first stock
+          this.getAllOrders(data[0]);
         });
         console.log("received: " + data);
         console.log("stocks state is now:" + this.state.stocks);
@@ -345,6 +349,7 @@ class App extends Component {
       console.log(this.state.selectedStock + "has been selected");
       this.filterStockOrders(selectedStock);
       this.filterStockTrades(selectedStock);
+      this.getAllOrders(selectedStock);
     });
   };
 
@@ -357,6 +362,16 @@ class App extends Component {
           this.splitorders(this.state.orders);
         });
       });
+  };
+
+  // Gets all the orders for the order manager page
+  getAllOrders = (selectedStock) => {
+    fetch(SERVICE_URL + "ordersForStock?stockId=" + selectedStock.id)
+        .then((data) => data.json())
+        .then((data) => {
+          this.setState({ allOrders: data }, () => {
+          });
+        });
   };
 
   //Will fetch the trades for a particular stock used in orderbook and historical data page
@@ -512,7 +527,7 @@ class App extends Component {
                   selectedStock={this.state.selectedStock}
                   stocks={this.state.stocks}
                   selectingStock={this.selectingStock}
-                  orders={this.state.orders}
+                  orders={this.state.allOrders}
                   trades={this.state.stockTrades}
                   getAllOrderDetails={this.getAllOrderDetails}
                   retrieveOrderDetails={this.retrieveOrderDetails}
